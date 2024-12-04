@@ -1,0 +1,2 @@
+# Factors-Influencing-Airbnb-Pricing-in-Barcelona-A-Predictive-Analysis-Using-Linear-Regression
+This project analyzes the Barcelona Airbnb listings dataset to identify key factors influencing pricing in the city's short-term rental market. It explores property attributes like location, amenities, and host characteristics, using linear regression to quantify the relationship between these factors and nightly prices.
