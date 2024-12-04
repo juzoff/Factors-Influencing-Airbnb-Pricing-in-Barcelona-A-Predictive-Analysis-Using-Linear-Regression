@@ -31,3 +31,67 @@ This project analyzes the Barcelona Airbnb listings dataset to identify key fact
 ## *>Branch 5: Model Summary and Final Reporting<*
 ### •	5.1. Results Summary
 ### •	5.2. Insights and Next Steps
+
+# Assignment Outcome: Comparison of Models
+The below section presents a comparison of two types of regression models—**Linear Regression** and **Random Forest**—evaluated through various iterations. Below is a detailed summary of the model performances, showing improvements from the initial models to the final versions.
+
+---
+
+## 1. **First Linear Regression Model**:
+   - **Residual Standard Error**: 341  
+   - **R-squared**: 37.41%  
+   - **Adjusted R-squared**: 35.33%  
+   - **F-statistic**: 17.98  
+   - **p-value**: < 2.2e-16
+
+   The first linear regression model had a low R-squared, indicating poor predictive power. The large residual error suggested the model was not a good fit for the data.
+
+---
+
+## 2. **First Random Forest Model**:
+   - **Mean Squared Residuals**: 32,789.3  
+   - **Explained Variance**: 81.76%
+
+   The first random forest model showed a good improvement over the linear regression model, explaining 81.76% of the variance. However, there was still room for improvement in terms of prediction accuracy.
+
+---
+
+## 3. **Last Linear Regression Model**:
+   - **Residual Standard Error**: 33.57  
+   - **R-squared**: 92.7%  
+   - **Adjusted R-squared**: 92.68%  
+   - **F-statistic**: 3394  
+   - **p-value**: < 2.2e-16
+
+   The last linear regression model significantly improved, explaining 92.7% of the variance. The smaller residual error demonstrated better prediction accuracy.
+
+---
+
+## 4. **Last Random Forest Model**:
+   - **Mean Squared Residuals**: 1004.815  
+   - **Explained Variance**: 93.47%
+
+   The final random forest model showed exceptional predictive power, explaining 93.47% of the variance with a drastically reduced mean squared residual. This was the most accurate model in terms of predictive performance.
+
+---
+
+## **Conclusion**:
+
+- **Overall Comparison**:  
+   Both the **final linear regression** and **random forest models** showed substantial improvements over the initial versions. The **random forest model** outperformed the linear regression models, with both the last random forest and linear regression models achieving nearly identical explained variance (around 93%).
+
+- **Best Performing Model**:  
+   The **last random forest model** was the most robust, achieving the highest accuracy and lowest residual error, making it the top performer.
+
+---
+
+## **Model Results Summary Table**:
+
+| Model                    | Residual Standard Error | R-squared | Explained Variance | Mean Squared Residuals |
+|--------------------------|-------------------------|-----------|---------------------|------------------------|
+| 1st Linear Regression     | 341                     | 37.41%    | N/A                 | N/A                    |
+| 1st Random Forest         | N/A                     | N/A       | 81.76%              | 32,789.3               |
+| Last Linear Regression    | 33.57                   | 92.7%     | N/A                 | N/A                    |
+| Last Random Forest        | N/A                     | N/A       | 93.47%              | 1004.815               |
+
+---
