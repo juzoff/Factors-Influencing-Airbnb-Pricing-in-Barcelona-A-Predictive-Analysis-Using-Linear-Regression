@@ -89,9 +89,9 @@ The below section presents a comparison of two types of regression models—**Li
 
 | Model                    | Residual Standard Error | R-squared | Explained Variance | Mean Squared Residuals |
 |--------------------------|-------------------------|-----------|---------------------|------------------------|
-| 1st Linear Regression     | 341                     | 37.41%    | N/A                 | N/A                    |
-| 1st Random Forest         | N/A                     | N/A       | 81.76%              | 32,789.3               |
-| Last Linear Regression    | 33.57                   | 92.7%     | N/A                 | N/A                    |
-| Last Random Forest        | N/A                     | N/A       | 93.47%              | 1004.815               |
+| Initial Linear Regression     | 341                     | 37.41%    | N/A                 | N/A                    |
+| Initial Random Forest         | N/A                     | N/A       | 81.76%              | 32,789.3               |
+| Final Linear Regression    | 33.57                   | 92.7%     | N/A                 | N/A                    |
+| Final Random Forest        | N/A                     | N/A       | 93.47%              | 1004.815               |
 
 ---
