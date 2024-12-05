@@ -69,8 +69,8 @@ The below section presents a comparison of two types of regression models—**Li
 
 # Branches: 
 ## *>Branch 1: Data Import, Initial Exploration, Cleaning, and Preprocessing<*
-### •	1.1. Reading a CSV File into R
-### •	1.2. Checking Missing and Empty Values in the Data Frame
+### •	1.1. Importing and Previewing the Dataset
+### •	1.2. Checking for Missing and Empty Values
 ### •	1.3. Cleaning and Transforming the Dataset
 ### •	1.4  Data Cleaning and Imputation for Missing Values
 ### •	1.5 Final Data Cleaning and Validation
