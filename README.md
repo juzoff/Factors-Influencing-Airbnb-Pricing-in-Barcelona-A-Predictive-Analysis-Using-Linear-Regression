@@ -4,7 +4,7 @@
 This project analyzes the Barcelona Airbnb listings dataset to identify key factors influencing pricing in the city's short-term rental market. It explores property attributes like location, amenities, and host characteristics, using linear regression to quantify the relationship between these factors and nightly prices.
 
 # Assignment Outcome: Comparison of Models
-The below section presents a comparison of two types of regression models—**Linear Regression** and **Random Forest**—evaluated through various iterations. Below is a detailed summary of the model performances, showing improvements from the initial models to the final versions.
+The below section presents a comparison of two types of regression models—**Linear Regression** and **Random Forest**—evaluated through various iterations. Below is a detailed summary of the model performances, showing improvements from the first/initial models to the final versions.
 
 ---
 
@@ -60,8 +60,8 @@ The below section presents a comparison of two types of regression models—**Li
 
 | Model                    | Residual Standard Error | R-squared | Explained Variance | Mean Squared Residuals |
 |--------------------------|-------------------------|-----------|---------------------|------------------------|
-| Initial Linear Regression     | 341                     | 37.41%    | N/A                 | N/A                    |
-| Initial Random Forest         | N/A                     | N/A       | 81.76%              | 32,789.3               |
+| First Linear Regression     | 341                     | 37.41%    | N/A                 | N/A                    |
+| Fist Random Forest         | N/A                     | N/A       | 81.76%              | 32,789.3               |
 | Final Linear Regression    | 33.57                   | 92.7%     | N/A                 | N/A                    |
 | Final Random Forest        | N/A                     | N/A       | 93.47%              | 1004.815               |
 
@@ -76,8 +76,8 @@ The below section presents a comparison of two types of regression models—**Li
 ### •	1.5 Final Data Cleaning and Validation
 
 ## *>Branch 2: Feature Engineering, Model Development and Feature Selection<*
-### •	2.1. Feature Engineering, Encoding for Property Listings Dataset, and Initial Random Forest Model
-### •	2.2. Initial Linear Model Development and Feature Selection for Price Prediction
+### •	2.1. Feature Engineering, Encoding for Property Listings Dataset, and First Random Forest Model
+### •	2.2. First Linear Model Development and Feature Selection for Price Prediction
 ### •	2.3. Multicollinearity Assessment and Attribute Refinement
 ### •	2.4. Stepwise Regression and Post-Refinement of Attributes
 
