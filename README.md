@@ -7,9 +7,12 @@
 
 ## •	2.2. First Linear Model Development and Feature Selection for Price Prediction
 - First Linear Model: Fitted an initial linear regression model using all features to predict price as a baseline for comparison with subsequent models.
-- Feature Significance: Identifed significant predictors (with p-values < 0.10) based on the model's summary, and created a new model with only these significant features.
 
-**PUT HERE RESIDUAL PLOT AND RESULTS OF INITIAL linear model**
+![results - initial](https://github.com/user-attachments/assets/9a034494-f891-42d2-a9de-0a92b12e8094)
+![regression values - initial](https://github.com/user-attachments/assets/dd3d9a11-2dab-4a52-98c8-3819f9d34ad6)
+
+- Creating Residual Plot from First Linear Model.
+- Feature Significance: Identifed significant predictors (with p-values < 0.10) based on the model's summary, and created a new model with only these significant features.
 
 ## •	2.3. Multicollinearity Assessment and Attribute Refinement
 - Variance Inflation Factor (VIF) Calculation: Evaluated multicollinearity in the dataset by calculating VIF for each feature in the model.
