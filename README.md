@@ -20,8 +20,8 @@ The below section presents a comparison of two types of regression models—**Li
 ---
 
 ## 2. **First Random Forest Model**:
-   - **Mean Squared Residuals**: 32,789.3  
-   - **Explained Variance**: 81.76%
+   - **Mean Squared Residuals**: 31,264.6  
+   - **Explained Variance**: 82.61%
 
    The first random forest model showed a good improvement over the linear regression model, explaining 81.76% of the variance. However, there was still room for improvement in terms of prediction accuracy.
 
@@ -61,7 +61,7 @@ The below section presents a comparison of two types of regression models—**Li
 | Model                    | Residual Standard Error | R-squared | Explained Variance | Mean Squared Residuals |
 |--------------------------|-------------------------|-----------|---------------------|------------------------|
 | First Linear Regression     | 341                     | 37.41%    | N/A                 | N/A                    |
-| Fist Random Forest         | N/A                     | N/A       | 81.76%              | 32,789.3               |
+| Fist Random Forest         | N/A                     | N/A       | 82.61%              | 31264.6               |
 | Final Linear Regression    | 33.57                   | 92.7%     | N/A                 | N/A                    |
 | Final Random Forest        | N/A                     | N/A       | 93.47%              | 1004.815               |
 
