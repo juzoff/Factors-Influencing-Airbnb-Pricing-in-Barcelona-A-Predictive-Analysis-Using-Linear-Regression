@@ -81,11 +81,12 @@ The below section presents a comparison of two types of regression models—**Li
 ### •	2.3. Multicollinearity Assessment and Attribute Refinement
 ### •	2.4. Stepwise Regression and Post-Refinement of Attributes
 
-## *>Branch 3: Model Refinement and Outlier Detection<*
+## *>Branch 3: Model Refinement and Residual Analysis<*
 ### •	3.1. Linear Model After Stepwise Regression
-### •	3.2. Residual Plot Before Removal of Outliers
-### •	3.3. Removing Outliers and Visualizing Residuals
-### •	3.4. Linear Model with Significant Attributes After Outlier Removal
+### •	3.2. Residual Plot Before Handling Large Residuals
+### •	3.3. Identifying and Removing Data Points with Large Residuals
+### •	3.4. Linear Model with Significant Attributes After Handling Large Residuals
+### •	3.5. Residual Plot After Handling Large Residuals
 
 ## *>Branch 4: Final Model Development and Evaluation<*
 ### •	4.1. Final Removal of Outliers and Fitting the Final Linear Model
