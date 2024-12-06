@@ -17,6 +17,9 @@ The below section presents a comparison of two types of regression models—**Li
 
    The first linear regression model had a low R-squared, indicating poor predictive power. The large residual error suggested the model was not a good fit for the data.
 
+![results - initial](https://github.com/user-attachments/assets/cb9a3518-8825-4c41-80c3-7c390991b9a1)
+
+
 ---
 
 ## 2. **First Random Forest Model**:
@@ -24,6 +27,8 @@ The below section presents a comparison of two types of regression models—**Li
    - **Explained Variance**: 82.61%
 
    The first random forest model showed a good improvement over the linear regression model, explaining 81.76% of the variance. However, there was still room for improvement in terms of prediction accuracy.
+
+![randomforestfirst](https://github.com/user-attachments/assets/38e7f4d8-af2d-4750-9061-6d6ff634060f)
 
 ---
 
