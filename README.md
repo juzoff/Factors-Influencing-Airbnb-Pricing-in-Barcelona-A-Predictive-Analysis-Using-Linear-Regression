@@ -8,7 +8,7 @@
 ![randomforestfirstvi](https://github.com/user-attachments/assets/0cc4bc46-fa9c-4f0e-933f-391b73d15a75)
 
 
-## •	2.2. First Linear Model Development and Feature Selection for Price Prediction
+## •	2.2. First Linear Model Development, Feature Selection for Price Prediction, and Second Linear Model Development
 - First Linear Model: Fitted an initial linear regression model using all features to predict price as a baseline for comparison with subsequent models.
 
 ![results - initial](https://github.com/user-attachments/assets/9a034494-f891-42d2-a9de-0a92b12e8094)
@@ -18,7 +18,7 @@
 
 ![residualplot](https://github.com/user-attachments/assets/5d68181e-f06f-474a-88fe-2deba2b11de7)
   
-- Feature Significance: Identifed significant predictors (with p-values < 0.10) based on the model's summary, and created a new model with only these significant features.
+- Feature Significance: Identify significant predictors (with p-values < 0.10) based on the model's summary, and create a second linear model with only these significant features.
 
 ## •	2.3. Multicollinearity Assessment and Attribute Refinement
 - Variance Inflation Factor (VIF) Calculation: Evaluated multicollinearity in the dataset by calculating VIF for each feature in the model.
