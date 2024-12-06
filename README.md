@@ -27,18 +27,18 @@ The below section presents a comparison of two types of regression models—**Li
 
 ---
 
-## 3. **Last Linear Regression Model**:
+## 3. **Final Linear Regression Model**:
    - **Residual Standard Error**: 33.57  
    - **R-squared**: 92.7%  
    - **Adjusted R-squared**: 92.68%  
    - **F-statistic**: 3394  
    - **p-value**: < 2.2e-16
 
-   The last linear regression model significantly improved, explaining 92.7% of the variance. The smaller residual error demonstrated better prediction accuracy.
+   The final linear regression model significantly improved, explaining 92.7% of the variance. The smaller residual error demonstrated better prediction accuracy.
 
 ---
 
-## 4. **Last Random Forest Model**:
+## 4. **Final Random Forest Model**:
    - **Mean Squared Residuals**: 1004.815  
    - **Explained Variance**: 93.47%
 
