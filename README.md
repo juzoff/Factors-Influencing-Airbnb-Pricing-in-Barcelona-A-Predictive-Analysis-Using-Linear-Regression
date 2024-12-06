@@ -77,7 +77,7 @@ The below section presents a comparison of two types of regression models—**Li
 
 ## *>Branch 2: Feature Engineering, Model Development and Feature Selection<*
 ### •	2.1. Feature Engineering, Encoding for Property Listings Dataset, and First Random Forest Model
-### •	2.2. First Linear Model Development and Feature Selection for Price Prediction
+### •	2.2. First Linear Model Development, Feature Selection for Price Prediction, and Second Linear Model Development
 ### •	2.3. Multicollinearity Assessment and Attribute Refinement
 ### •	2.4. Stepwise Regression and Post-Refinement of Attributes
 
