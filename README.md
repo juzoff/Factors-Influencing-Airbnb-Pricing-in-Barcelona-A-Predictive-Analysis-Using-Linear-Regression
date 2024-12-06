@@ -6,6 +6,8 @@
 - Developed an initial Random Forest model as a baseline for comparison with subsequent models, providing a benchmark to evaluate the effectiveness of feature engineering and feature selection techniques.
 ![randomforestfirst](https://github.com/user-attachments/assets/ff2c1f3f-be8b-46e4-8809-9ea1fa24cb2c)
 ![randomforestfirstvi](https://github.com/user-attachments/assets/0cc4bc46-fa9c-4f0e-933f-391b73d15a75)
+![residualrf](https://github.com/user-attachments/assets/f695e0f1-4e0d-4f20-9ba2-03d094c509d3)
+
 
 
 ## •	2.2. First Linear Model Development, Feature Selection for Price Prediction, and Second Linear Model Development
