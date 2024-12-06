@@ -6,7 +6,7 @@
 - Developed an initial Random Forest model as a baseline for comparison with subsequent models, providing a benchmark to evaluate the effectiveness of feature engineering and feature selection techniques.
 
 ## •	2.2. First Linear Model Development and Feature Selection for Price Prediction
-- First Linear Model: Fitted an initial linear regression model using all features to predict price.
+- First Linear Model: Fitted an initial linear regression model using all features to predict price as a baseline for comparison with subsequent models.
 - Feature Significance: Identifed significant predictors (with p-values < 0.10) based on the model's summary, and created a new model with only these significant features.
 
 **PUT HERE RESIDUAL PLOT AND RESULTS OF INITIAL linear model**
