@@ -17,8 +17,10 @@ The below section presents a comparison of two types of regression models—**Li
 
    The first linear regression model had a low R-squared, indicating poor predictive power. The large residual error suggested the model was not a good fit for the data.
 
-![results - initial](https://github.com/user-attachments/assets/cb9a3518-8825-4c41-80c3-7c390991b9a1)
+![results - initial](https://github.com/user-attachments/assets/9a034494-f891-42d2-a9de-0a92b12e8094)
+![regression values - initial](https://github.com/user-attachments/assets/dd3d9a11-2dab-4a52-98c8-3819f9d34ad6)
 
+![residualplot](https://github.com/user-attachments/assets/5d68181e-f06f-474a-88fe-2deba2b11de7)
 
 ---
 
