@@ -1,11 +1,12 @@
-# Branch 2: Feature Engineering, Model Development, and Feature Selection
+# Branch 2: Feature Engineering, Encoding for Property Listings Dataset, and First Random Forest Model
 ## •	2.1. Feature Engineering and Encoding for Property Listings Dataset
 - Engineering New Features: The amenities and host_verifications columns were originally in a list format, requiring preprocessing and tokenization. This involved cleaning the data by removing unnecessary characters and splitting the list values into distinct tokens for better analysis.
 - Created Binary Indicator Variables: Generated binary columns for each unique amenity and host verification, representing the presence of these features in each listing.
 - Categorical Encoding: Encoded categorical variables into dummy variables for further modeling using caret::dummyVars().
+- Developed an initial Random Forest model as a baseline for comparison with subsequent models, providing a benchmark to evaluate the effectiveness of feature engineering and feature selection techniques.
 
-## •	2.2. Initial Linear Model Development and Feature Selection for Price Prediction
-- Initial Linear Model: Fitted an initial linear regression model using all features to predict price.
+## •	2.2. First Linear Model Development and Feature Selection for Price Prediction
+- First Linear Model: Fitted an initial linear regression model using all features to predict price.
 - Feature Significance: Identifed significant predictors (with p-values < 0.10) based on the model's summary, and created a new model with only these significant features.
 
 **PUT HERE RESIDUAL PLOT AND RESULTS OF INITIAL linear model**
