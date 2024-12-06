@@ -14,11 +14,15 @@
 ![results - initial](https://github.com/user-attachments/assets/9a034494-f891-42d2-a9de-0a92b12e8094)
 ![regression values - initial](https://github.com/user-attachments/assets/dd3d9a11-2dab-4a52-98c8-3819f9d34ad6)
 
-- Creating Residual Plot from First Linear Model.
+- Created Residual Plot from First Linear Model.
 
 ![residualplot](https://github.com/user-attachments/assets/5d68181e-f06f-474a-88fe-2deba2b11de7)
   
 - Feature Significance: Identify significant predictors (with p-values < 0.10) based on the model's summary, and create a second linear model with only these significant features.
+
+![results - second](https://github.com/user-attachments/assets/2f55efbd-3af4-4998-93b1-d2dec7826473)
+![regression values - second](https://github.com/user-attachments/assets/86342a6c-2997-4583-be85-855e9816797a)
+
 
 ## •	2.3. Multicollinearity Assessment and Attribute Refinement
 - Variance Inflation Factor (VIF) Calculation: Evaluated multicollinearity in the dataset by calculating VIF for each feature in the model.
