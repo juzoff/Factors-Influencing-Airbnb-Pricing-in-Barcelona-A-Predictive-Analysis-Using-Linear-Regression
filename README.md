@@ -27,6 +27,7 @@
 ![residuallm - final](https://github.com/user-attachments/assets/284f11e2-a5bc-44d1-921e-00b8cc7a20d2)
 
 ## •	4.4. Final Random Forest Model Development
-- Performed residual analysis by plotting residuals versus fitted values to ensure randomness.
-- Conducted a final multicollinearity check using Variance Inflation Factor (VIF) to ensure that there no potential collinearity issues.
+- Trained a final Random Forest model using the cleaned dataset in 4.2, with price as the target variable.
+
+![randomforestfinal](https://github.com/user-attachments/assets/182fb14d-f5dd-437d-9c08-463dfd0e4155)
 
