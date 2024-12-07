@@ -24,7 +24,7 @@
 - Performed residual analysis by plotting residuals versus fitted values to ensure randomness.
 - Conducted a final multicollinearity check using Variance Inflation Factor (VIF) to ensure that there no potential collinearity issues.
 
-![residuallm - final](https://github.com/user-attachments/assets/652b61f3-31ac-43a7-b48e-620f64677911)
+![residuallm - final](https://github.com/user-attachments/assets/284f11e2-a5bc-44d1-921e-00b8cc7a20d2)
 
 ## •	4.4. Final Random Forest Model Development
 - Performed residual analysis by plotting residuals versus fitted values to ensure randomness.
