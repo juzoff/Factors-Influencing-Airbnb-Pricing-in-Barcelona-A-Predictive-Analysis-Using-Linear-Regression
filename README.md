@@ -20,4 +20,13 @@
 ![results final](https://github.com/user-attachments/assets/5d13f4a7-c89c-482e-bb4d-ae05ec5177e1)
 ![residuals final](https://github.com/user-attachments/assets/5fb8c4d2-5e02-4296-8690-fabfd50c5b40)
 
+## •	4.3. Final Linear Model Evaluation and Multicollinearity Check
+- Performed residual analysis by plotting residuals versus fitted values to ensure randomness.
+- Conducted a final multicollinearity check using Variance Inflation Factor (VIF) to ensure that there no potential collinearity issues.
+
+![residuallm - final](https://github.com/user-attachments/assets/652b61f3-31ac-43a7-b48e-620f64677911)
+
+## •	4.4. Final Random Forest Model Development
+- Performed residual analysis by plotting residuals versus fitted values to ensure randomness.
+- Conducted a final multicollinearity check using Variance Inflation Factor (VIF) to ensure that there no potential collinearity issues.
 
