@@ -81,12 +81,6 @@ The below section presents a comparison of two types of regression models—**Li
 
 ## **Model Results Summary Table**:
 
-| Model                    | Residual Standard Error | R-squared | Explained Variance | Mean Squared Residuals |
-|--------------------------|-------------------------|-----------|---------------------|------------------------|
-| First Linear Regression     | 341                     | 37.41%    | N/A                 | N/A                    |
-| Fist Random Forest         | N/A                     | N/A       | 82.61%              | 31264.6               |
-| Final Linear Regression    | 33.57                   | 92.7%     | N/A                 | N/A                    |
-| Final Random Forest        | N/A                     | N/A       | 93.47%              | 1004.815               |
 
 | Model                    | Residual Standard Error | R-squared | Explained Variance | Mean Squared Residuals | Results                                           | Residual Plot                                   |
 |--------------------------|-------------------------|-----------|---------------------|------------------------|-------------------------------------------------|------------------------------------------------|
