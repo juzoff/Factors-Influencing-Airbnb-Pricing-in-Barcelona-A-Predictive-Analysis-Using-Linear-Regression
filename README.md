@@ -46,6 +46,12 @@ The below section presents a comparison of two types of regression models—**Li
 
    The final linear regression model significantly improved, explaining 92.7% of the variance. The smaller residual error demonstrated better prediction accuracy.
 
+![results final](https://github.com/user-attachments/assets/d92868d3-72ca-4235-bafd-94e994f71158)
+![residuals final](https://github.com/user-attachments/assets/8c7027c9-4064-41d5-be48-f4cde432884b)
+
+![residuallm - final](https://github.com/user-attachments/assets/284f11e2-a5bc-44d1-921e-00b8cc7a20d2)
+
+
 ---
 
 ## 4. **Final Random Forest Model**:
