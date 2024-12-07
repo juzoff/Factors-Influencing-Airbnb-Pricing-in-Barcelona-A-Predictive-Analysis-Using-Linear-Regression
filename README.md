@@ -62,6 +62,11 @@ The below section presents a comparison of two types of regression models—**Li
 
    The final random forest model showed exceptional predictive power, explaining 93.47% of the variance with a drastically reduced mean squared residual. This was the most accurate model in terms of predictive performance.
 
+![randomforestfinal](https://github.com/user-attachments/assets/ff22dc11-f5f4-40d5-8f68-25498ec6d94e)
+![randomforestfinalvi](https://github.com/user-attachments/assets/7ac8eefd-9af1-4f7c-94cb-ee335f22ae45)
+![randomforestfinalrp](https://github.com/user-attachments/assets/63614139-3865-4011-8c67-829ee6703f67)
+
+
 ---
 
 ## **Conclusion**:
@@ -88,7 +93,7 @@ The below section presents a comparison of two types of regression models—**Li
 | First Linear Regression  | 341                     | 37.41%    | N/A                 | N/A                    | ![results - initial](https://github.com/user-attachments/assets/9a034494-f891-42d2-a9de-0a92b12e8094)   | ![residualplot](https://github.com/user-attachments/assets/5d68181e-f06f-474a-88fe-2deba2b11de7) |
 | First Random Forest      | N/A                     | N/A       | 82.61%              | 31264.6                | ![randomforestfirst](https://github.com/user-attachments/assets/38e7f4d8-af2d-4750-9061-6d6ff634060f)   | ![residualrf](https://github.com/user-attachments/assets/1dcd2cd6-87c0-4a14-a28f-ecef402928e7) |
 | Final Linear Regression  | 33.57                   | 92.7%     | N/A                 | N/A                    | ![results final](https://github.com/user-attachments/assets/d92868d3-72ca-4235-bafd-94e994f71158)   | ![residuallm - final](https://github.com/user-attachments/assets/284f11e2-a5bc-44d1-921e-00b8cc7a20d2) |
-| Final Random Forest      | N/A                     | N/A       | 93.47%              | 1004.815               | ![Results](https://github.com/user-attachments/assets/0cc4bc46-fa9c-4f0e-933f-391b73d15a75)   | N/A                                            |
+| Final Random Forest      | N/A                     | N/A       | 93.47%              | 1004.815               | ![randomforestfinal](https://github.com/user-attachments/assets/ff22dc11-f5f4-40d5-8f68-25498ec6d94e)  | ![randomforestfinalrp](https://github.com/user-attachments/assets/63614139-3865-4011-8c67-829ee6703f67)                                            |
 
 ---
 
