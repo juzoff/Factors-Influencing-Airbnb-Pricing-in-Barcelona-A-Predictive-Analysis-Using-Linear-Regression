@@ -4,7 +4,7 @@
 This project analyzes the Barcelona Airbnb listings dataset to identify key factors influencing pricing in the city's short-term rental market. It explores property attributes like location, amenities, and host characteristics, using linear regression to quantify the relationship between these factors and nightly prices.
 
 # Assignment Outcome: Comparison of Models
-The below section presents a comparison of two types of regression models—**Linear Regression** and **Random Forest**—evaluated through various iterations. Below is a detailed summary of the model performances, showing improvements from the first/initial models to the final versions.
+The below section presents a comparison of two types of regression models—**Linear Regression** and **Random Forest**—evaluated through various iterations. Below is a detailed summary of the model performances, showing improvements from the first models to the final versions.
 
 ---
 
@@ -85,7 +85,7 @@ The below section presents a comparison of two types of regression models—**Li
 |--------------------------|-------------------------|-----------|---------------------|------------------------|-------------------------------------------------|------------------------------------------------|
 | First Linear Regression  | 341                     | 37.41%    | N/A                 | N/A                    | ![results - initial](https://github.com/user-attachments/assets/9a034494-f891-42d2-a9de-0a92b12e8094)   | ![residualplot](https://github.com/user-attachments/assets/5d68181e-f06f-474a-88fe-2deba2b11de7) |
 | First Random Forest      | N/A                     | N/A       | 82.61%              | 31264.6                | ![randomforestfirst](https://github.com/user-attachments/assets/38e7f4d8-af2d-4750-9061-6d6ff634060f)   | ![residualrf](https://github.com/user-attachments/assets/1dcd2cd6-87c0-4a14-a28f-ecef402928e7) |
-| Final Linear Regression  | 33.57                   | 92.7%     | N/A                 | N/A                    | ![Results](https://github.com/user-attachments/assets/d92868d3-72ca-4235-bafd-94e994f71158)   | ![Residual Plot](https://github.com/user-attachments/assets/284f11e2-a5bc-44d1-921e-00b8cc7a20d2) |
+| Final Linear Regression  | 33.57                   | 92.7%     | N/A                 | N/A                    | ![results final](https://github.com/user-attachments/assets/d92868d3-72ca-4235-bafd-94e994f71158)   | ![residuallm - final](https://github.com/user-attachments/assets/284f11e2-a5bc-44d1-921e-00b8cc7a20d2) |
 | Final Random Forest      | N/A                     | N/A       | 93.47%              | 1004.815               | ![Results](https://github.com/user-attachments/assets/0cc4bc46-fa9c-4f0e-933f-391b73d15a75)   | N/A                                            |
 
 ---
