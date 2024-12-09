@@ -120,8 +120,8 @@ The below section presents a comparison of two types of regression models—**Li
 ### •	4.4. Final Random Forest Model Development
 ### •	4.5. Final Random Forest Residual Analysis/Evaluation
 
-## *>Branch 5: Model Summary and Final Reporting<*
-### •	5.1. Results Summary
-### •	5.2. Insights and Next Steps
-
+## *>Branch 5: Final Model Evaluation & Comparison: Predictions on Training vs. Test Sets, Analysis, and Performance Metrics for First vs. Final Linear Models<*
+### •	5.1. First Linear Model: Prediction Analysis, Actual vs Predicted Comparison, and Residuals
+### •	5.2. Final Linear Model: Prediction Analysis, Actual vs Predicted Comparison, and Residuals
+### •	5.3. Model Training, Testing, Performance Metrics, and Visualization Analysis
 
