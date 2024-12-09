@@ -17,7 +17,7 @@ The below section presents a comparison of two types of regression models—**Li
    - **F-statistic**: 17.98  
    - **p-value**: < 2.2e-16
 
-   The first linear regression model had a low R-squared, indicating poor predictive power. The large residual error suggested the model was not a good fit for the data.
+   The first model has a residual standard error of 341, an R-squared of 37.41%, and an adjusted R-squared of 35.33%. While statistically significant (F-statistic = 17.98, p < 2.2e-16), the model explains only a small portion of the variability in the response variable, showing substantial unexplained variance and relatively high prediction errors.
 
 ![results - initial](https://github.com/user-attachments/assets/9a034494-f891-42d2-a9de-0a92b12e8094)
 ![regression values - initial](https://github.com/user-attachments/assets/dd3d9a11-2dab-4a52-98c8-3819f9d34ad6)
@@ -46,7 +46,8 @@ The below section presents a comparison of two types of regression models—**Li
    - **F-statistic**: 3394  
    - **p-value**: < 2.2e-16
 
-   The final linear regression model significantly improved, explaining 92.7% of the variance. The smaller residual error demonstrated better prediction accuracy.
+   The final model demonstrates much stronger performance, with a residual standard error of 33.57, an R-squared of 92.7%, and an adjusted R-squared of 92.68%. It also has a very high F-statistic (3394) with a p-value < 2.2e-16, confirming that the model is highly statistically significant and successfully captures the relationships in the data.
+
 
 ![results final](https://github.com/user-attachments/assets/d92868d3-72ca-4235-bafd-94e994f71158)
 ![residuals final](https://github.com/user-attachments/assets/8c7027c9-4064-41d5-be48-f4cde432884b)
@@ -71,8 +72,10 @@ The below section presents a comparison of two types of regression models—**Li
 
 ## **Conclusion**:
 
-- **Overall Comparison**:  
-   Both the **final linear regression** and **random forest models** showed substantial improvements over the initial versions. The **random forest model** outperformed the linear regression models, with both the last random forest and linear regression models achieving nearly identical explained variance (around 93%).
+- **Overall Comparison - Linear Modelse**:  
+   The final linear regression model shows a remarkable improvement over the first model, with significantly smaller residuals, a much higher R-squared value (92.7%), and reduced prediction errors. These results suggest that the final model is much better at explaining variability in the target variable compared to the first model, which only explained 37.41% of the variance. The final model's statistical significance and overall fit indicate that adjustments and feature selections have been successful, leading to a far superior and reliable model.
+
+
 
 - **Best Performing Model**:  
    The **last random forest model** was the most robust, achieving the highest accuracy and lowest residual error, making it the top performer.
