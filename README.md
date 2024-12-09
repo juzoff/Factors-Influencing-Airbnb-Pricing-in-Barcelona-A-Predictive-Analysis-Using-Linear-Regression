@@ -30,7 +30,7 @@ The below section presents a comparison of two types of regression models—**Li
    - **Mean Squared Residuals**: 31,264.6  
    - **Explained Variance**: 82.61%
 
-   The first random forest model showed a good improvement over the linear regression model, explaining 81.76% of the variance. However, there was still room for improvement in terms of prediction accuracy.
+   The first random forest model has mean squared residuals of 31,264.6 and an explained variance of 82.61%. While this model demonstrates good performance, the relatively high mean squared residuals suggest that there is still substantial unexplained variance, and its predictions could be further optimized.
 
 ![randomforestfirst](https://github.com/user-attachments/assets/38e7f4d8-af2d-4750-9061-6d6ff634060f)
 ![randomforestfirstvi](https://github.com/user-attachments/assets/0cc4bc46-fa9c-4f0e-933f-391b73d15a75)
@@ -61,7 +61,7 @@ The below section presents a comparison of two types of regression models—**Li
    - **Mean Squared Residuals**: 1004.815  
    - **Explained Variance**: 93.47%
 
-   The final random forest model showed exceptional predictive power, explaining 93.47% of the variance with a drastically reduced mean squared residual. This was the most accurate model in terms of predictive performance.
+   The final random forest model exhibits a mean squared residuals of 1004.815 and an explained variance of 93.47%. These metrics show a significant reduction in prediction error compared to the first model and demonstrate that the final model captures a higher proportion of variability in the target variable.
 
 ![randomforestfinal](https://github.com/user-attachments/assets/ff22dc11-f5f4-40d5-8f68-25498ec6d94e)
 ![randomforestfinalvi](https://github.com/user-attachments/assets/7ac8eefd-9af1-4f7c-94cb-ee335f22ae45)
@@ -72,10 +72,11 @@ The below section presents a comparison of two types of regression models—**Li
 
 ## **Conclusion**:
 
-- **Overall Comparison - Linear Modelse**:  
+- **Overall Comparison - Linear Models**:  
    The final linear regression model shows a remarkable improvement over the first model, with significantly smaller residuals, a much higher R-squared value (92.7%), and reduced prediction errors. These results suggest that the final model is much better at explaining variability in the target variable compared to the first model, which only explained 37.41% of the variance. The final model's statistical significance and overall fit indicate that adjustments and feature selections have been successful, leading to a far superior and reliable model.
 
-
+- **Overall Comparison - Random Forest Models**:  
+   The final random forest model outperforms the first random forest model by achieving a much lower mean squared residual value and a higher explained variance of 93.47%, compared to 82.61% in the first model. These improvements indicate that the final model is far better at capturing patterns in the data, with substantially improved predictive accuracy and reduced error. This highlights the success of further model refinements, optimizations, or adjustments in improving model performance.
 
 - **Best Performing Model**:  
    The **last random forest model** was the most robust, achieving the highest accuracy and lowest residual error, making it the top performer.
