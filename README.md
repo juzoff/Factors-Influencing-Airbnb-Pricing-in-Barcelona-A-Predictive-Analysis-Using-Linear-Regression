@@ -22,3 +22,5 @@
 - Evaluate Model Performance: Predictions were made on the testing sets. Performance metrics such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R-squared (R²) values were calculated for both training and testing sets for both the first and final models.
 - Visualization of Results: Visualizations were created to analyze the models' performance. Scatter plots compare actual vs predicted values, and histograms show the distribution of residuals for both models to examine prediction errors and residual patterns.
 
+![5 3](https://github.com/user-attachments/assets/c1577093-c43c-43eb-ac4d-575e1307f2ac)
+
