@@ -1,4 +1,10 @@
 # Branch 3: Model Refinement and Residual Analysis
+
+### > FILE: 
+    - Credit Score - Prediction, Scoring and Implementation.sas
+    - New_Data.csv
+    - scored_new_data_creditscore.csv
+
 ## •	3.1. Third Linear Model Development and Analysis After Stepwise Regression
 - Fitted a refined linear model (third model) using predictors selected after the stepwise regression process.
 
