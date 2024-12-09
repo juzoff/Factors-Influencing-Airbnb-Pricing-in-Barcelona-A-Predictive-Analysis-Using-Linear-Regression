@@ -20,7 +20,7 @@
 ![results final](https://github.com/user-attachments/assets/5d13f4a7-c89c-482e-bb4d-ae05ec5177e1)
 ![residuals final](https://github.com/user-attachments/assets/5fb8c4d2-5e02-4296-8690-fabfd50c5b40)
 
-## •	4.3. Final Linear Model Residual Analyis/Evaluation and Multicollinearity Check
+## •	4.3. Final Linear Model Residual Analysis/Evaluation and Multicollinearity Check
 - Performed residual analysis by plotting residuals versus fitted values to ensure randomness.
 - Conducted a final multicollinearity check using Variance Inflation Factor (VIF) to ensure that there no potential collinearity issues.
 
