@@ -23,6 +23,39 @@
 - Visualization of Results: Visualizations were created to analyze the models' performance. Scatter plots compare actual vs predicted values, and histograms show the distribution of residuals for both models to examine prediction errors and residual patterns.
 
 ![5 3a](https://github.com/user-attachments/assets/a30691f0-b8c3-4238-8852-822311ba712e)
-
-
 <img src="https://github.com/user-attachments/assets/c1577093-c43c-43eb-ac4d-575e1307f2ac" width="600" />
+
+- The final model significantly outperforms the first model in all metrics. While the first model has low R-squared values (37.6% for training, 34.2% for testing) and high errors (RMSE ~336 for training, ~342 for testing), the final model achieves much higher R-squared values (93.1% for training, 91.5% for testing) and drastically lower errors (RMSE ~33.5 for both sets). The improvement reflects better accuracy, reduced prediction errors, and strong generalization, due to better feature selection, model tuning, or addressing issues such as overfitting or outliers.
+
+<img src="https://github.com/user-attachments/assets/bc8c99d0-54e4-4f96-9309-0da850915311" width="600" />
+<img src="https://github.com/user-attachments/assets/df5a4cc1-0d2f-4a42-95f7-a114b2d49e6a" width="600" />
+
+- These two scatter plots show Actual vs. Predicted Price from a linear model, and they illustrate improvements between an initial and a final model.
+   - Key Observations:
+      1.	First Model:
+         - The predictions are widely scattered around the diagonal "perfect prediction" line (dashed).
+        	- There are many points far from the line, indicating poor predictions and a lack of fit.
+         - Extreme variability is visible, especially for higher actual prices (e.g., beyond 2000 on the x-axis), where predictions deviate significantly.
+      2. Final Model:
+         - The points are tightly clustered around the diagonal line, showing much better alignment between predicted and actual values.
+         - The variance in predictions has reduced significantly, indicating a stronger and more accurate fit.
+         - The model performs well across all price ranges without extreme deviations.
+   - Overall Difference:
+      - The final model is much more accurate and consistent compared to the first. It suggests significant improvements, likely through better feature selection, hyperparameter tuning, or cleaning of data.
+      - The first model is poor at generalizing, while the final model aligns well with the actual data.
+
+<img src="https://github.com/user-attachments/assets/9c70fe0f-bba8-4e1c-afd1-0c5f9a433f57" width="600" />
+
+- The two histograms compare the distribution of residuals (errors) from two linear models: the First Linear Model on the left and the Final Linear Model on the right.
+  - First Linear Model (Left):
+    - The residuals are highly concentrated around 0 but have an extremely narrow range with only a few very large outliers visible on both sides.
+    - This indicates that the model likely has issues, such as poor handling of the data's variability or outliers dominating the residual distribution.
+  - Final Linear Model (Left):
+    - The residuals are more evenly distributed and form a bell-shaped curve centered around 0.
+    - This suggests that the model fits the data better, with a more normal distribution of residuals and fewer extreme outliers.
+- Key Difference:
+  - The first model has a poorly distributed set of residuals with extreme outliers, while the final model achieves a more balanced and well-behaved residual distribution, improving the fit.
+
+
+
+
