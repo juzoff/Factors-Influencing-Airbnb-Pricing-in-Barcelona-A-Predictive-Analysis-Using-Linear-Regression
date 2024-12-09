@@ -18,7 +18,7 @@
 
 
 ## •	5.3. Model Training, Testing, Performance Metrics, and Visualization Analysis	
-- Split Data and Train Models: The dataset is split into training (70%) and testing (30%) sets using random sampling. Two linear models are trained: the first and last linear models. These models are built using all available predictors.
-- Evaluate Model Performance: Predictions are made on the testing sets. Performance metrics such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R-squared (R²) values are calculated for both training and testing sets for both the first and final models.
-- Visualization of Results: Visualizations are created to analyze the models' performance. Scatter plots compare actual vs predicted values, and histograms show the distribution of residuals for both models to examine prediction errors and residual patterns.
+- Split Data and Train Models: The dataset was split into training (70%) and testing (30%) sets using random sampling. Two linear models were trained: the first and final linear models. These models were built using all available predictors.
+- Evaluate Model Performance: Predictions were made on the testing sets. Performance metrics such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R-squared (R²) values were calculated for both training and testing sets for both the first and final models.
+- Visualization of Results: Visualizations were created to analyze the models' performance. Scatter plots compare actual vs predicted values, and histograms show the distribution of residuals for both models to examine prediction errors and residual patterns.
 
