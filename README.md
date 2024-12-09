@@ -114,9 +114,11 @@ The below section presents a comparison of two types of regression models—**Li
 
 
 ## *>Branch 4: Final Model Development and Evaluation<*
-### •	4.1. Final Removal of Outliers and Fitting the Final Linear Model
-### •	4.2. Final Model Evaluation and Multicollinearity Check
-### •	4.3. Random Forest Model Development and Evaluation
+### •	4.1. Selection of Significant Attributes for Fifth Linear Model
+### •	4.2. Final Linear Model Development After Handling Large Residuals
+### •	4.3. Final Linear Model Residual Analysis/Evaluation and Multicollinearity Check
+### •	4.4. Final Random Forest Model Development
+### •	4.5. Final Random Forest Residual Analysis/Evaluation
 
 ## *>Branch 5: Model Summary and Final Reporting<*
 ### •	5.1. Results Summary
