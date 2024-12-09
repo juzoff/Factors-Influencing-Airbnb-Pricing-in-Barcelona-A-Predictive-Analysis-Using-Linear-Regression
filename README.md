@@ -81,10 +81,9 @@ The below section presents a comparison of two types of regression models—**Li
 - **Best Performing Model**:  
    The **last random forest model** was the most robust, achieving the highest accuracy and lowest residual error, making it the top performer.
 
+<img src="https://github.com/user-attachments/assets/670a6606-408c-4a2e-98bb-e7cce47ecbb7" width="600" />
 
-![main](https://github.com/user-attachments/assets/670a6606-408c-4a2e-98bb-e7cce47ecbb7)
-
-![main2](https://github.com/user-attachments/assets/2b105a7d-1f34-4de0-a791-a003d3e12616)
+<img src="https://github.com/user-attachments/assets/2b105a7d-1f34-4de0-a791-a003d3e12616" width="600" />
 
 ---
 ## **Model Results Summary Table**:
