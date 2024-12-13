@@ -7,7 +7,7 @@
 
 ## •	Insights From Final Linear Model
 ### Top 5 Positive Influencers on Target Variable - Price
-- ![image](https://github.com/user-attachments/assets/04ace788-73e5-47c0-8906-78d60d15c7fb)
+- <img src="https://github.com/user-attachments/assets/04ace788-73e5-47c0-8906-78d60d15c7fb" width="650" />
 
     - property_typeNature.lodge - $4,856.29
          - Premium Pricing: Lodge-type properties significantly command higher prices, suggesting unique features and experiences attract guests willing to pay more.
@@ -30,7 +30,7 @@
 
 
 ### Top 5 Negative Influencers on Target Variable - Price
-- ![image](https://github.com/user-attachments/assets/3cd8b8b2-b0c6-483c-ab8b-997125513a75)
+- <img src="https://github.com/user-attachments/assets/3cd8b8b2-b0c6-483c-ab8b-997125513a75" width="650" />
 
     - host_is_superhost (Estimate: -10.69)
       - Interpretation: This attribute indicates whether the host is a superhost. Since the value is 'f' (false), it suggests that the property is not managed by a superhost, which correlates with a negative impact on price. Superhosts are typically recognized for providing exceptional service and experiences, so listings without this designation may command lower prices.
@@ -46,3 +46,6 @@
 
     - host_neighbourhoodEmbajadores (Estimate: -210.28)
       - Interpretation: The Embajadores neighborhood shows the most significant negative influence on price. Such a drastic estimate could mean Embajadores is viewed very negatively compared to other areas, possibly due to factors like high noise levels, safety concerns, or being less appealing in terms of local attractions and amenities.
+     
+## •	Insights From Final Random Forest Model
+
