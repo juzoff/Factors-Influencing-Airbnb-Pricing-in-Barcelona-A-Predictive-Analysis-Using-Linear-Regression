@@ -5,7 +5,7 @@
     - New_Data.csv
     - scored_new_data_creditscore.csv
 
-## •	Insights From FInal Linear Model
+## •	Insights From Final Linear Model
 ### Top 5 Positive Influencers on Target Variable - Price
 - ![image](https://github.com/user-attachments/assets/04ace788-73e5-47c0-8906-78d60d15c7fb)
 
