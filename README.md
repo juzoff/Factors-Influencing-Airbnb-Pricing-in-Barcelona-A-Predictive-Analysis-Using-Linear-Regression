@@ -1,9 +1,8 @@
 # Branch 2: Feature Engineering, Encoding for Property Listings Dataset, and First Random Forest Model
 
 ### > FILE: 
-    - Credit Score - Prediction, Scoring and Implementation.sas
-    - New_Data.csv
-    - scored_new_data_creditscore.csv
+    - Barcelona Airbnb listings - Linear Modeling.Rmd
+
 
 ## •	2.1. Feature Engineering, Encoding for Property Listings Dataset, and First Random Forest Model
 - Engineering New Features: The amenities and host_verifications columns were originally in a list format, requiring preprocessing and tokenization. This involved cleaning the data by removing unnecessary characters and splitting the list values into distinct tokens for better analysis.
