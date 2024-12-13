@@ -1,9 +1,8 @@
 # Branch 5: Final Model Evaluation & Comparison: Predictions on Training vs. Test Sets, Analysis, and Performance Metrics for First vs. Final Linear Models
 
 ### > FILE: 
-    - Credit Score - Prediction, Scoring and Implementation.sas
-    - New_Data.csv
-    - scored_new_data_creditscore.csv
+    - Barcelona Airbnb listings - Linear Modeling.Rmd
+
 
 ## •	5.1. First Linear Model: Prediction Analysis, Actual vs Predicted Comparison, and Residuals
 - Generated Predictions: The predict() function was used with the trained first linear model to generate predictions on the dataset.
