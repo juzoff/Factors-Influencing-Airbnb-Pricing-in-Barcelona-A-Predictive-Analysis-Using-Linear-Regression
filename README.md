@@ -1,7 +1,7 @@
 # Branch 7: Machine Learning Pipeline
 
 ### > FILE: 
-    - Barcelona Airbnb listings - Linear Modeling.Rmd
+    - PIPELINE - Predicting Airbnb Prices - Linear Regression.Rmd
 
 ## •	Pipeline #1 - Data Preparation and Model Training
 - Data Preparation: It organizes and cleans the raw Airbnb listings data, ensuring that it is in a usable format for analysis. This includes removing irrelevant information, converting textual data into numerical or binary formats, and handling missing values effectively.
