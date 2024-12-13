@@ -135,3 +135,7 @@ The below section presents a comparison of two types of regression models—**Li
 ## *>Branch 6: Final Insights & Analysis<*
 ### •	Final Linear Model Insights
 ### •	Final Random Forest Insights
+
+## *>Machine Learning Pipeline<*
+### •	Pipeline #1 - Data Preparation and Model Training
+### •	Pipeline #2 - New Dataset
