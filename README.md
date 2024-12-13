@@ -132,3 +132,6 @@ The below section presents a comparison of two types of regression models—**Li
 ### •	5.2. Final Linear Model: Prediction Analysis, Actual vs Predicted Comparison, and Residuals
 ### •	5.3. Model Training, Testing, Performance Metrics, and Visualization Analysis
 
+## *>Branch 6: Final Insights & Analysis<*
+### •	Final Linear Model Insights
+### •	Final Random Forest Insights
