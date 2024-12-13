@@ -32,3 +32,19 @@
 
 
 ### Top 5 Negative Influencers on Target Variable - Price
+- ![image](https://github.com/user-attachments/assets/3cd8b8b2-b0c6-483c-ab8b-997125513a75)
+
+    - host_is_superhost (Estimate: -10.69)
+      - Interpretation: This attribute indicates whether the host is a superhost. Since the value is 'f' (false), it suggests that the property is not managed by a superhost, which correlates with a negative impact on price. Superhosts are typically recognized for providing exceptional service and experiences, so listings without this designation may command lower prices.
+
+    - host_response_rate61 (Estimate: -25.41)
+      - Interpretation: A response rate of 61% suggests that the host is not very responsive to inquiries. Low responsiveness can deter potential guests, directly affecting the appeal and booking rate of the listing, hence a reduction in price.
+
+    - host_neighbourhoodAdelfas (Estimate: -32.25)
+      - Interpretation: The listing is located in the Adelfas neighborhood, which has a significant negative impact on price. This could indicate that Adelfas is perceived as less desirable compared to other neighborhoods in the dataset, possibly due to factors like amenities, safety, and attractiveness.
+
+    - host_response_rate72 (Estimate: -51.15)
+      - Interpretation: With a response rate of 72%, this attribute indicates that the host is somewhat responsive but still does not meet higher standards of guest communication. While better than a 61% rate, it is still relatively low. This may still lead to uncertainty for potential guests, thus adversely affecting the price.
+
+    - host_neighbourhoodEmbajadores (Estimate: -210.28)
+      - Interpretation: The Embajadores neighborhood shows the most significant negative influence on price. Such a drastic estimate could mean Embajadores is viewed very negatively compared to other areas, possibly due to factors like high noise levels, safety concerns, or being less appealing in terms of local attractions and amenities.
