@@ -1,0 +1,827 @@
+---
+title: "Barcelona Airbnb listings - Linear Modeling"
+output: html_document
+date: "2024-12-02"
+---
+
+# 1. Data Import, Initial Exploration, Cleaning, and Preprocessing
+
+## 1.1 
+###Reading a CSV File into R
+```{r}
+# Set the file path for the CSV file
+file_path <- "C:/Users/jivko/Documents/Data Analytics, Big Data, and Predictive Analytics/Personal Project/Linear Regression/barcelona_listings1.csv"
+
+# Read the CSV file into a dataframe
+barcalistings <- read.csv(file_path, header = TRUE)
+```
+###Viewing head of dataset
+```{r}
+head(barcalistings)
+```
+
+## 1.2 
+###Checking empty values
+```{r}
+sapply(barcalistings, function(x) sum(x == ""))
+```
+###Checking missing values
+```{r}
+sapply(barcalistings, function(x) sum(is.na(x)))
+```
+### Viewing structure of dataset
+```{r}
+str(barcalistings)
+```
+
+## 1.3 
+###Removing irrelevant attributes from dataset
+```{r}
+# Remove the specified columns from the dataset
+barcalistings2 <- barcalistings[, !(names(barcalistings) %in% c("has_availability", "listing_url", "name", "summary", "description", "picture_url", "host_url", "host_name", "host_picture_url", "street", "neighbourhood", "city", "country", "host_since", "first_review", "last_review"))]
+
+# Check the dataset to confirm the columns are removed
+str(barcalistings2)
+```
+###Replace neighborhood_overview, space, access .... with binary, 1 for something there, 0 for empty string
+```{r}
+# Replace specified columns with binary values
+cols_to_transform <- c("neighborhood_overview", "space", "access")
+
+# Apply transformation
+barcalistings2[cols_to_transform] <- lapply(barcalistings2[cols_to_transform], function(x) {
+  ifelse(x == "", 0, 1)
+})
+```
+
+###Checking updated structure of dataset
+```{r}
+str(barcalistings2)
+```
+###Convert cleaning_fee to numeric and replace cleaning_fee "" with median of cleaning_fee
+```{r}
+# Remove dollar sign and spaces from the cleaning_fee column
+barcalistings2$cleaning_fee <- gsub("[$ ]", "", barcalistings2$cleaning_fee)
+
+# Convert cleaning_fee to numeric
+barcalistings2$cleaning_fee <- as.numeric(barcalistings2$cleaning_fee)
+
+# Calculate the median (or mean) of cleaning_fee, excluding NA values
+cleaning_fee_median <- median(barcalistings2$cleaning_fee, na.rm = TRUE)
+# Alternatively, you can use mean() if preferred
+# cleaning_fee_mean <- mean(barcalistings2$cleaning_fee, na.rm = TRUE)
+
+# Replace empty values (NA) or empty strings with the median
+barcalistings2$cleaning_fee[is.na(barcalistings2$cleaning_fee)] <- cleaning_fee_median
+
+# Check the result
+summary(barcalistings2$cleaning_fee)
+```
+###Converting price from character to numeric
+```{r}
+# Convert the price from character to numeric by removing "$" and spaces
+barcalistings2$price <- as.numeric(gsub("[$, ]", "", barcalistings2$price))
+```
+
+```{r}
+summary(barcalistings2$price)
+```
+```{r}
+summary(barcalistings2$cleaning_fee)
+```
+
+## 1.4
+###Missing Values Check
+```{r}
+# Check for missing values in each column
+colSums(is.na(barcalistings))
+```
+###Imputing Missing and Zero Values in Numeric Columns: Replacing NAs with Medians and Zero Values in square_feet with Neighborhood Averages in a Property Listings Dataset
+```{r}
+# List of columns to impute with median
+columns_to_impute <- c(
+  "host_listings_count", "bathrooms", "bedrooms", "beds", "cleaning_fee", "review_scores_rating",
+  "review_scores_accuracy", "review_scores_cleanliness", "review_scores_checkin",
+  "review_scores_communication", "review_scores_location", "review_scores_value",
+  "reviews_per_month"
+)
+
+# Replace NAs in each column with the median
+for (col in columns_to_impute) {
+  barcalistings2[[col]][is.na(barcalistings2[[col]])] <- median(barcalistings2[[col]], na.rm = TRUE)
+}
+
+# Impute missing or zero values in square_feet with the average of their corresponding neighbourhood_cleansed
+barcalistings2$square_feet <- ifelse(
+  barcalistings2$square_feet == 0 | is.na(barcalistings2$square_feet), 
+  ave(barcalistings2$square_feet, barcalistings2$neighbourhood_cleansed, FUN = function(x) mean(x[x != 0], na.rm = TRUE)),
+  barcalistings2$square_feet
+)
+
+# Verify the changes (Check if there are any remaining missing or zero values in square_feet)
+sum(barcalistings2$square_feet == 0)  # Check if there are still 0 values
+sum(is.na(barcalistings2$square_feet))  # Check if there are still NA values
+
+# Summary of the square_feet column after imputation
+summary(barcalistings2$square_feet)
+```
+###Imputing Missing square_feet Values: Replacing NAs with Neighborhood Group Averages in a Property Listings Dataset - for propertys whose neighbourhood does not have squarefeet - use grouped avg
+```{r}
+# Impute missing square_feet values (NA) with the average square_feet of neighbourhood_group_cleansed
+barcalistings2$square_feet <- ifelse(
+  is.na(barcalistings2$square_feet),
+  ave(barcalistings2$square_feet, barcalistings2$neighbourhood_group_cleansed, FUN = function(x) mean(x, na.rm = TRUE)),
+  barcalistings2$square_feet
+)
+
+# Verify the changes
+sum(is.na(barcalistings2$square_feet))  # Check if there are still any missing values
+```
+###Checking updated structure of dataset
+```{r}
+str(barcalistings2)
+```
+
+## 1.5
+###Converting price and cleaning_fee from character to numeric, again
+```{r}
+# Convert the price from character to numeric by removing "$" and spaces
+barcalistings2$price <- as.numeric(gsub("[$, ]", "", barcalistings2$price))
+barcalistings2$cleaning_fee <- as.numeric(gsub("[$, ]", "", barcalistings2$cleaning_fee))
+```
+###Ensuring no missing Values 
+```{r}
+# Check for missing values in each column
+colSums(is.na(barcalistings2))
+```
+###Confirming that there are no missing values
+```{r}
+# Check if there are any missing values in the dataframe
+any(is.na(barcalistings2))
+```
+```{r}
+sapply(barcalistings2, function(x) sum(x == ""))
+```
+
+
+# 2. Feature Engineering, Model Development and Feature Selection
+
+## 2.1
+###Feature Engineering, Encoding for Property Listings Dataset, and First Random Forest Model
+```{r}
+library(dplyr)
+library(stringr)
+library(caret)
+
+# Step 1: Preprocess the `amenities` column
+barcalistings2 <- barcalistings2 %>%
+  mutate(
+    amenities_cleaned = str_remove_all(amenities, "\\[|\\]|'"),  # Clean the amenities string
+    amenities_list = str_split(amenities_cleaned, ",\\s*")  # Split by comma to get list of amenities
+  )
+
+# Step 2: Preprocess the `host_verifications` column
+barcalistings2 <- barcalistings2 %>%
+  mutate(
+    host_verifications_cleaned = str_remove_all(host_verifications, "\\[|\\]|'"),  # Clean the host_verifications string
+    host_verifications_list = str_split(host_verifications_cleaned, ",\\s*")  # Split by comma to get list of verifications
+  )
+
+# Step 3: Extract unique amenities and host verifications from the cleaned lists
+unique_amenities <- unique(unlist(barcalistings2$amenities_list))  # Get all unique amenities across listings
+unique_host_verifications <- unique(unlist(barcalistings2$host_verifications_list))  # Get all unique host verifications
+
+# Step 4: Create binary columns for each unique amenity
+barcalistings2_with_amenities <- barcalistings2
+for (amenity in unique_amenities) {
+  barcalistings2_with_amenities <- barcalistings2_with_amenities %>%
+    mutate(!!paste0(amenity, "_binary") := as.integer(sapply(amenities_list, function(x) amenity %in% x)))
+}
+
+# Step 5: Create binary columns for each unique host verification
+for (verification in unique_host_verifications) {
+  barcalistings2_with_amenities <- barcalistings2_with_amenities %>%
+    mutate(!!paste0(verification, "_verification") := as.integer(sapply(host_verifications_list, function(x) verification %in% x)))
+}
+
+# Step 6: Encode categorical attributes using caret's dummyVars
+dummy_vars <- dummyVars(price ~ 
+                         host_response_time + 
+                         host_response_rate + 
+                         host_is_superhost + 
+                         host_neighbourhood + 
+                         host_has_profile_pic + 
+                         host_identity_verified + 
+                         neighbourhood_cleansed + 
+                         neighbourhood_group_cleansed +
+                         zipcode + 
+                         is_location_exact + 
+                         property_type + 
+                         room_type +
+                         instant_bookable, 
+                       data = barcalistings2_with_amenities)
+
+encoded_data <- predict(dummy_vars, newdata = barcalistings2_with_amenities)
+barcalistings2_encoded <- data.frame(encoded_data)
+
+# Step 7: Combine the encoded categorical data with the original numeric and binary columns
+barcalistings3_encoded <- cbind(barcalistings2_encoded, 
+                                barcalistings2_with_amenities[, !(names(barcalistings2_with_amenities) %in% c("amenities", "amenities_list", "amenities_cleaned", 
+                                                                                                           "host_verifications", "host_verifications_list", "host_verifications_cleaned"))])
+
+# Check the resulting dataframe
+head(barcalistings3_encoded)
+```
+```{r}
+str(barcalistings3_encoded)
+```
+```{r}
+# Remove the specified columns from the dataset
+barcalistings3_encoded2 <- barcalistings3_encoded[, !(names(barcalistings3_encoded) %in% c("host_is_superhost", "property_type", "room_type", "zipcode", "host_response_time", "host_response_rate", "host_neighbourhood", "host_has_profile_pic", "host_identity_verified", "neighbourhood_cleansed",  "neighbourhood_group_cleansed", "is_location_exact", "instant_bookable"))]
+```
+###Initial Random Forest Model
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(randomForest)
+
+# Example dataset
+# significant_data5aftersw <- your_dataset_here
+
+# Clean column names to remove spaces and special characters
+colnames(barcalistings3_encoded2) <- make.names(colnames(barcalistings3_encoded2), unique = TRUE)
+
+# Ensure column names are now clean
+print(colnames(barcalistings3_encoded2))
+
+# Set option to prevent scientific notation in output
+options(scipen = 999)
+
+# Fit the random forest model with 'price' as the target variable
+random_forest_modelinitial <- randomForest(
+  price ~ .,  
+  data = barcalistings3_encoded2, 
+  ntree = 150,  # Reduce the number of trees
+  importance = TRUE,  
+  na.action = na.omit
+)
+
+# Summary of the random forest model
+print(random_forest_modelinitial)
+
+# View variable importance
+importance <- randomForest::importance(random_forest_modelinitial)
+print(importance)
+
+# Shorten feature names for better readability
+colnames(barcalistings3_encoded2) <- gsub("_", ".", colnames(barcalistings3_encoded2))  # or any other shortening strategy
+
+# Re-run the random forest model with updated names
+random_forest_modelinitial <- randomForest(price ~ ., data = barcalistings3_encoded2, ntree = 150, importance = TRUE)
+
+# Open a new graphics window (optional step for environments that don't automatically open plots)
+dev.new()  # For R outside RStudio, or when in RStudio use the Plots pane
+
+# Plot variable importance with customized parameters
+varImpPlot(random_forest_modelinitial, 
+           cex = 0.7,                # Reduce text size
+           pch = 16,                 # Change point shape
+           main = "Variable Importance - First Random Forest Model",  # Add title
+           col = "gray40")             # Change color for better visibility
+```
+```{r}
+# Residuals from Random Forest (predicted vs actual)
+rf_pred <- predict(random_forest_modelinitial, newdata = barcalistings3_encoded2)
+rf_residuals <- barcalistings3_encoded2$price - rf_pred
+
+plot(rf_pred, rf_residuals,
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Residual Plot - First Random Forest Model",
+     pch = 16, col = "gray40")
+abline(h = 0, col = "red", lwd = 2)
+```
+
+## 2.2 
+###First Linear Model Development and Feature Selection for Price Prediction
+```{r}
+# Fit the linear model
+linearm <- lm(barcalistings3_encoded2$price ~ ., data = barcalistings3_encoded2)
+
+# Get the summary of the model
+summary(linearm)
+```
+###Residual Plot from First Linear Model ********
+```{r}
+# Residuals vs Fitted values for Linear Model
+plot(linearm$fitted.values, linearm$residuals,
+     xlab = "Fitted Values", 
+     ylab = "Residuals",
+     main = "Residual Plot - First Linear Model",
+     pch = 16, col = "gray40")
+abline(h = 0, col = "red", lwd = 2)
+```
+###Linear Model with just signicant attributes (below 0.10) from price vs attributes all model
+```{r}
+# Fit the initial linear model
+linearm <- lm(price ~ ., data = barcalistings3_encoded2)
+
+# Get the summary of the model
+model_summary <- summary(linearm)
+
+# Extract p-values
+p_values <- model_summary$coefficients[, 4]
+
+# Select variables with p-value < 0.
+significant_vars <- names(p_values)[p_values < 0.10]
+
+# Create a new formula with the significant variables
+new_formula <- as.formula(paste("price ~", paste(significant_vars, collapse = " + ")))
+
+# Fit the new linear model with only significant variables
+linearm_significant <- lm(new_formula, data = barcalistings3_encoded2)
+
+# Get the summary of the new model
+summary(linearm_significant)
+```
+
+```{r}
+# Adjust significant_vars by removing columns that don't exist in the dataframe
+valid_significant_vars <- intersect(significant_vars, colnames(barcalistings3_encoded2))
+
+# Include 'price' if necessary and subset the data
+valid_significant_vars <- c("price", valid_significant_vars)
+significant_data <- barcalistings3_encoded2[, valid_significant_vars]
+
+# Check the resulting dataframe
+head(significant_data)
+```
+
+```{r}
+# Clean column names by removing spaces or unwanted characters, if necessary
+cleaned_colnames <- gsub("[[:space:][:punct:]]", "", colnames(significant_data))
+
+# Print cleaned column names
+head(significant_data)
+```
+###Removing irrelevant attributes from dataset
+```{r}
+# Remove the specified columns from the dataset
+significant_data2 <- significant_data[, !(names(significant_data) %in% c("price.1"))]
+
+# Check the dataset to confirm the columns are removed
+str(significant_data2)
+```
+
+## 2.3 
+###Check for Multicollinearity First (Before Stepwise Regression):
+```{r}
+# Checking VIF for multicollinearity
+library(car)
+vif_model <- lm(price ~ ., data = significant_data2)
+vif(vif_model)
+```
+
+```{r}
+str(significant_data2)
+```
+###Removing attributes with VIF of 10 and above from dataset
+```{r}
+# Remove the specified columns from the dataset
+significant_data4 <- significant_data2[, !(names(significant_data2) %in% c("room_typeEntire.home.apt", "room_typePrivate.room", "availability_60", "availability_90"))]
+
+# Check the dataset to confirm the columns are removed
+str(significant_data4)
+```
+
+## 2.4
+###Stepwise Regression
+```{r}
+library(MASS)
+stepwise_model <- stepAIC(lm(price ~ ., data = significant_data4), direction = "both", trace = FALSE)
+summary(stepwise_model)
+```
+###Post-Stepwise Attribute Refinement
+```{r}
+# Remove the specified columns from the dataset
+significant_data5aftersw <- significant_data4[, !(names(significant_data4) %in% c("zipcode8025", "zipcode8028", "id", "host_response_rate100.", "zipcode8013", "host_response_rate91.", "zipcode8009", "zipcode8015", "zipcode8037", "host_response_rate67.", "host_response_rate82.", "zipcode8006", "zipcode8038", "Washer_binary", "zipcode8024", "is_location_exactf", "host_response_rate50.", "zipcode8029", "host_response_rate57.", "neighbourhood_cleansedla.Font.d.en.Fargues", "jumio_verification", "zipcode8001"))]
+
+# Check the dataset to confirm the columns are removed
+str(significant_data5aftersw)
+```
+###Model Evaluation 
+```{r}
+# Checking VIF for multicollinearity
+library(car)
+vif_model <- lm(price ~ ., data = significant_data5aftersw)
+vif(vif_model)
+```
+
+
+# 3. Model Refinement and Residual Analysis
+
+## 3.1 
+###Third Linear Model Development and Analysis After Stepwise Regression
+```{r}
+letsee <- lm(price~., data = significant_data5aftersw)
+summary(letsee)
+```
+##3.2
+###Residual Plot Before Handling Large Residuals
+```{r}
+# Residuals vs Fitted values for Linear Model
+plot(letsee$fitted.values, letsee$residuals,
+     xlab = "Fitted Values", 
+     ylab = "Residuals",
+     main = "Residual Plot for Third Linear Model - Before Handling Large Residuals",
+     pch = 16, col = "deepskyblue")
+abline(h = 0, col = "red", lwd = 2)
+```
+##3.3
+###Identifying and Removing Data Points with Large Residuals
+```{r}
+# Calculate residuals and fitted values
+residuals <- residuals(letsee) # Residuals from the model
+fitted <- fitted(letsee)       # Fitted values from the model
+
+# Calculate thresholds using IQR
+Q1 <- quantile(residuals, 0.25) # 1st Quartile
+Q3 <- quantile(residuals, 0.75) # 3rd Quartile
+IQR <- Q3 - Q1                  # Interquartile Range
+
+# Define lower and upper bounds for outliers
+lower_threshold <- Q1 - 1.5 * IQR
+upper_threshold <- Q3 + 1.5 * IQR
+
+# Identify large residuals outside the thresholds
+large_residuals <- which(residuals > upper_threshold | residuals < lower_threshold)
+
+# Review rows with large residuals
+outlier_rows <- significant_data5aftersw[large_residuals, ] # Outlier rows for inspection
+
+# Remove rows with large residuals
+significant_data_cleaned <- significant_data5aftersw[-large_residuals, ]
+
+# Output summary
+cat("Removed", length(large_residuals), "rows due to large residuals.\n")
+cat("Lower threshold:", lower_threshold, "Upper threshold:", upper_threshold, "\n")
+```
+##3.4
+###Fourth Linear Model Development with Significant Attributes After Handling Large Residuals
+```{r}
+tyr <- lm(significant_data_cleaned$price~ ., data = significant_data_cleaned)
+summary(tyr)
+```
+##3.5
+###Residual Plot After Handling Large Residuals
+```{r}
+# Residuals vs Fitted values for Linear Model
+plot(tyr$fitted.values, tyr$residuals,
+     xlab = "Fitted Values", 
+     ylab = "Residuals",
+     main = "Residual Plot for Fourth Linear Model - After Handling Large Residuals",
+     pch = 16, col = "blue1")
+abline(h = 0, col = "red", lwd = 2)
+```
+
+# 4. Final Model Development and Evaluation
+
+## 4.1 
+###Selection of Significant Attributes for Fifth Linear Model
+```{r}
+# Fit the initial linear model
+tyr <- lm(price ~ ., data = significant_data_cleaned)
+
+# Get the summary of the model
+model_summary2 <- summary(tyr)
+
+# Extract p-values
+p_values <- model_summary2$coefficients[, 4]
+
+# Select variables with p-value < 0.08, excluding the Intercept
+significant_vars2 <- names(p_values)[p_values < 0.08 & names(p_values) != "(Intercept)"]
+
+# Create a new formula with the significant variables
+new_formula2 <- as.formula(paste("price ~", paste(significant_vars2, collapse = " + ")))
+
+# Fit the new linear model with only significant variables
+tyr_significant <- lm(new_formula2, data = significant_data_cleaned)
+
+# Get the summary of the new model
+summary(tyr_significant)
+```
+
+```{r}
+# Adjust significant_vars by removing columns that don't exist in the dataframe
+valid_significant_vars <- intersect(significant_vars2, colnames(significant_data_cleaned))
+
+# Include 'price' if necessary and subset the data
+valid_significant_vars <- c("price", valid_significant_vars)
+significant_data_final <- significant_data_cleaned[, valid_significant_vars]
+
+# Check the resulting dataframe
+head(significant_data_final)
+```
+
+```{r}
+str(significant_data_final)
+```
+
+## 4.2 
+###Final Linear Model Development After Handling Large Residuals
+```{r}
+# Calculate residuals and fitted values
+residuals <- residuals(tyr_significant) # Residuals from the model
+fitted <- fitted(tyr_significant)       # Fitted values from the model
+
+# Calculate thresholds using IQR
+Q1 <- quantile(residuals, 0.25) # 1st Quartile
+Q3 <- quantile(residuals, 0.75) # 3rd Quartile
+IQR <- Q3 - Q1                  # Interquartile Range
+
+# Define lower and upper bounds for outliers
+lower_threshold <- Q1 - 1.5 * IQR
+upper_threshold <- Q3 + 1.5 * IQR
+
+# Identify large residuals outside the thresholds
+large_residuals <- which(residuals > upper_threshold | residuals < lower_threshold)
+
+# Review rows with large residuals
+outlier_rows <- significant_data_final[large_residuals, ] # Outlier rows for inspection
+
+# Remove rows with large residuals
+significant_data_cleaned2 <- significant_data_final[-large_residuals, ]
+
+# Output summary
+cat("Removed", length(large_residuals), "rows due to large residuals.\n")
+cat("Lower threshold:", lower_threshold, "Upper threshold:", upper_threshold, "\n")
+```
+```{r}
+final <- lm(significant_data_cleaned2$price~ ., data = significant_data_cleaned2)
+summary(final)
+```
+
+## 4.3 
+###Final Linear Model Evaluation and Multicollinearity Check
+```{r}
+# Residuals vs Fitted values for Linear Model
+plot(final$fitted.values, final$residuals,
+     xlab = "Fitted Values", 
+     ylab = "Residuals",
+     main = "Residual Plot -  Final Linear Model",
+     pch = 16, col = "gold1")
+abline(h = 0, col = "red", lwd = 2)
+```
+
+```{r}
+# Checking VIF for multicollinearity
+library(car)
+vif(final)
+```
+
+## 4.4 
+###Final Random Forest Model Development
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(randomForest)
+
+# Example dataset
+# significant_data5aftersw <- your_dataset_here
+
+# Clean column names to remove spaces and special characters
+colnames(significant_data_cleaned2) <- make.names(colnames(significant_data_cleaned2), unique = TRUE)
+
+# Ensure column names are now clean
+print(colnames(significant_data_cleaned2))
+
+# Set option to prevent scientific notation in output
+options(scipen = 999)
+
+# Fit the random forest model with 'price' as the target variable
+random_forest_model4 <- randomForest(
+  price ~ .,  
+  data = significant_data_cleaned2, 
+  ntree = 150,  # Reduce the number of trees
+  importance = TRUE,  
+  na.action = na.omit
+)
+
+# Summary of the random forest model
+print(random_forest_model4)
+
+# View variable importance
+importance <- randomForest::importance(random_forest_model4)
+print(importance)
+
+# Shorten feature names for better readability
+colnames(significant_data_cleaned2) <- gsub("_", ".", colnames(significant_data_cleaned2))  # or any other shortening strategy
+
+# Re-run the random forest model with updated names
+random_forest_model4 <- randomForest(price ~ ., data = significant_data_cleaned2, ntree = 150, importance = TRUE)
+
+# Open a new graphics window (optional step for environments that don't automatically open plots)
+dev.new()  # For R outside RStudio, or when in RStudio use the Plots pane
+
+# Plot variable importance with customized parameters
+varImpPlot(random_forest_model4, 
+           cex = 0.7,                # Reduce text size
+           pch = 16,                 # Change point shape
+           main = "Variable Importance - Final Random Forest Model",  # Add title
+           col = "darkgreen")             # Change color for better visibility
+```
+
+```{r}
+# Residuals from Random Forest (predicted vs actual)
+rf_pred <- predict(random_forest_model4, newdata = significant_data_cleaned2)
+rf_residuals <- significant_data_cleaned2$price - rf_pred
+
+plot(rf_pred, rf_residuals,
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Residual Plot - Final Random Forest Model",
+     pch = 16, col = "darkgreen")
+abline(h = 0, col = "red", lwd = 2)
+```
+
+
+# 5. Model Evaluation & Comparison: Predictions on Training vs. Test Sets, Analysis, and Performance Metrics for First vs. Final Linear Models
+
+## 5.1
+###First Linear Model: Prediction Analysis, Actual vs Predicted Comparison, and Residuals
+```{r}
+# Generate predictions using the trained model (on training data or new data)
+predictionsfirst <- predict(linearm, newdata = barcalistings3_encoded2)
+
+# View the predictions
+head(predictionsfirst)
+```
+```{r}
+# Generate predictions using the trained model
+predictionsfirst <- predict(linearm, newdata = barcalistings3_encoded2)
+
+# Create a data frame with actual vs predicted values
+comparisonfirst5.1 <- data.frame(Actual = barcalistings3_encoded2$price, Predicted = predictionsfirst)
+
+# View the first few rows of the comparison
+head(comparisonfirst, 30)
+```
+```{r}
+# Assuming 'comparison' is a dataframe with 'Actual' and 'Predicted' columns
+
+# Add residuals as a new column to the dataframe
+comparisonfirst5.1$Residuals <- comparisonfirst5.1$Actual - comparisonfirst5.1$Predicted
+
+# View the first few rows of the dataframe with residuals
+print(head(comparisonfirst5.1))
+```
+
+```{r}
+summary(comparisonfirst5.1$Residuals)
+```
+
+
+## 5.2
+###Final Linear Model: Prediction Analysis, Actual vs Predicted Comparison, and Residuals
+```{r}
+# Generate predictions using the trained model (on training data or new data)
+predictions <- predict(final, newdata = significant_data_cleaned2)
+
+# View the predictions
+head(predictions)
+```
+```{r}
+# Generate predictions using the trained model
+predictions <- predict(final, newdata = significant_data_cleaned2)
+
+# Create a data frame with actual vs predicted values
+comparison <- data.frame(Actual = significant_data_cleaned2$price, Predicted = predictions)
+
+# View the first few rows of the comparison
+head(comparison, 30)
+```
+```{r}
+# Assuming 'comparison' is a dataframe with 'Actual' and 'Predicted' columns
+
+# Add residuals as a new column to the dataframe
+comparison$Residuals <- comparison$Actual - comparison$Predicted
+
+# View the first few rows of the dataframe with residuals
+print(head(comparison))
+```
+
+## 5.3 
+### Model Training, Testing, Performance Metrics, and Visualization Analysis
+```{r}
+# Load required libraries
+library(caTools)
+library(ggplot2)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Split the data into training (70%) and testing (30%) sets for both models
+split_first <- sample.split(barcalistings3_encoded2$price, SplitRatio = 0.7)
+split_final <- sample.split(significant_data_cleaned2$price, SplitRatio = 0.7)
+
+# Create training and testing sets for first linear model
+training_first <- barcalistings3_encoded2[split_first, ]
+testing_first <- barcalistings3_encoded2[!split_first, ]
+
+# Create training and testing sets for the final linear model
+training_final <- significant_data_cleaned2[split_final, ]
+testing_final <- significant_data_cleaned2[!split_final, ]
+
+# Train the first linear model on the first training set
+linear_model <- lm(price ~ ., data = training_first)
+summary(linear_model)
+
+# Train the final linear model on the final training set
+final_model <- lm(price ~ ., data = training_final)
+summary(final_model)
+
+# Generate predictions for testing sets
+predictions_first <- predict(linear_model, newdata = testing_first)
+predictions_final <- predict(final_model, newdata = testing_final)
+
+# Compare actual vs predicted values for first model
+comparisonfirst <- data.frame(Actual = testing_first$price, Predicted = predictions_first)
+
+# Compare actual vs predicted values for final model
+comparisonfinal <- data.frame(Actual = testing_final$price, Predicted = predictions_final)
+
+# Calculate residuals for testing sets
+residualsfirst <- comparisonfirst$Actual - comparisonfirst$Predicted
+residualsfinal <- comparisonfinal$Actual - comparisonfinal$Predicted
+
+# Calculate residuals for training sets
+residuals_train_first <- training_first$price - predict(linear_model, newdata = training_first)
+residuals_train_final <- training_final$price - predict(final_model, newdata = training_final)
+
+# Calculate MSE and RMSE for training set (First Model)
+mse_train_first <- mean(residuals_train_first^2)
+rmse_train_first <- sqrt(mse_train_first)
+
+# Calculate MSE and RMSE for training set (Final Model)
+mse_train_final <- mean(residuals_train_final^2)
+rmse_train_final <- sqrt(mse_train_final)
+
+# Calculate MSE and RMSE for testing set (First Model)
+mse_test_first <- mean(residualsfirst^2)
+rmse_test_first <- sqrt(mse_test_first)
+
+# Calculate MSE and RMSE for testing set (Final Model)
+mse_test_final <- mean(residualsfinal^2)
+rmse_test_final <- sqrt(mse_test_final)
+
+# Print evaluation metrics for the first model
+print(paste("First Model - Training R-squared:", round(r_squared_train_first, 4)))
+print(paste("First Model - Testing R-squared:", round(r_squared_test_first, 4)))
+cat("First Model:\n")
+cat("Training MSE:", round(mse_train_first, 4), "\n")
+cat("Training RMSE:", round(rmse_train_first, 4), "\n")
+cat("Test MSE:", round(mse_test_first, 4), "\n")
+cat("Test RMSE:", round(rmse_test_first, 4), "\n\n")
+
+# Print evaluation metrics for the final model
+cat("Final Model:\n")
+print(paste("Final Model - Training R-squared:", round(r_squared_train_final, 4)))
+print(paste("Final Model - Testing R-squared:", round(r_squared_test_final, 4)))
+cat("Training MSE:", round(mse_train_final, 4), "\n")
+cat("Training RMSE:", round(rmse_train_final, 4), "\n")
+cat("Test MSE:", round(mse_test_final, 4), "\n")
+cat("Test RMSE:", round(rmse_test_final, 4), "\n")
+
+# Visualize first linear model (actual vs predicted values)
+ggplot(comparisonfirst, aes(x = Actual, y = Predicted)) +
+  geom_point(color = 'grey40') +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = 'black') +
+  ggtitle("First Linear Model: Actual vs Predicted") +
+  xlab("Actual Price") +
+  ylab("Predicted Price")
+
+# Visualize final linear model (actual vs predicted values)
+ggplot(comparisonfinal, aes(x = Actual, y = Predicted)) +
+  geom_point(color = 'green2') +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = 'black') +
+  ggtitle("Final Linear Model: Actual vs Predicted") +
+  xlab("Actual Price") +
+  ylab("Predicted Price")
+
+# Plot residuals for both models side by side
+par(mfrow = c(1, 2)) # Set up two plots side-by-side
+hist(residualsfirst, main = "Residuals - First Linear Model", xlab = "Residuals", col = 'grey40', border = "black")
+hist(residualsfinal, main = "Residuals - Final Linear Model", xlab = "Residuals", col = 'green2', border = "black")
+```
+
+
+
+
+
+
+
+
+
+
+
+
