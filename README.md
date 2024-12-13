@@ -1,9 +1,8 @@
 # Branch 4: Final Model Development and Evaluation
 
 ### > FILE: 
-    - Credit Score - Prediction, Scoring and Implementation.sas
-    - New_Data.csv
-    - scored_new_data_creditscore.csv
+    - Barcelona Airbnb listings - Linear Modeling.Rmd
+
 
 ## •	4.1. Selection of Significant Attributes for Fifth Linear Model
 - Fitted a fifth linear regression model on the cleaned dataset from 3.4 (after removing large residuals).
