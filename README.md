@@ -1,8 +1,6 @@
 # Branch 1: Data Import, Initial Exploration, Cleaning, and Preprocessing
 ### > FILE: 
-    - Credit Score - Prediction, Scoring and Implementation.sas
-    - New_Data.csv
-    - scored_new_data_creditscore.csv
+    - Barcelona Airbnb listings - Linear Modeling.Rmd
 
 ## •	1.1. Importing and Previewing the Dataset
 - Importing the CSV File: Loaded the data from the specified file path.
