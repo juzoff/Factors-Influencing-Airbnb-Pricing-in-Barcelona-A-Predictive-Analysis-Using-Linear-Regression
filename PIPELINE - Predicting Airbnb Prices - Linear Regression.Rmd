@@ -1,0 +1,500 @@
+---
+title: "Airbnb - Linear Regression - PIPELINE"
+output: html_document
+date: "2024-12-10"
+---
+
+---------------------------------PIPELINE # 1 - DATA PREPERATION AND MODEL TRAINING ------------------------------------
+
+#Pipeline 1.1: Reading the CSV File into R
+```{r}
+# Set the file path for the CSV file
+file_path <- "C:/Users/jivko/Documents/Data Analytics, Big Data, and Predictive Analytics/Personal Project/Linear Regression/barcelona_listings1.csv"
+
+# Read the CSV file into a dataframe
+raw_airbnb_listings <- read.csv(file_path, header = TRUE)
+```
+
+#Pipeline 1.2: Removing Irrelevant Attributes from Dataset
+```{r}
+# Remove the specified columns from the dataset
+cleaned_airbnb_listings <- raw_airbnb_listings[, !(names(raw_airbnb_listings) %in% 
+                                                    c("has_availability", "listing_url", "name", "summary", 
+                                                      "description", "picture_url", "host_url", "host_name", 
+                                                      "host_picture_url", "street", "neighbourhood", "city", 
+                                                      "country", "host_since", "first_review", "last_review"))]
+```
+
+#Pipeline 1.3: Binary Transformation of Certain Columns
+```{r}
+# Specify columns to transform into binary values
+cols_to_transform <- c("neighborhood_overview", "space", "access")
+
+# Apply transformation
+cleaned_airbnb_listings[cols_to_transform] <- lapply(cleaned_airbnb_listings[cols_to_transform], function(x) 
+  ifelse(x == "", 0, 1))
+```
+
+#Pipeline 1.4: cleaning Up cleaning_fee
+```{r}
+# Remove dollar sign and spaces from the cleaning_fee column
+cleaned_airbnb_listings$cleaning_fee <- gsub("[$ ]", "", cleaned_airbnb_listings$cleaning_fee)
+
+# Convert cleaning_fee to numeric
+cleaned_airbnb_listings$cleaning_fee <- as.numeric(cleaned_airbnb_listings$cleaning_fee)
+
+# Replace empty values with the median
+cleaning_fee_median <- median(cleaned_airbnb_listings$cleaning_fee, na.rm = TRUE)
+cleaned_airbnb_listings$cleaning_fee[is.na(cleaned_airbnb_listings$cleaning_fee)] <- cleaning_fee_median
+```
+
+#Pipeline 1.5: Converting price to Numeric
+```{r}
+# Convert price from character to numeric
+cleaned_airbnb_listings$price <- as.numeric(gsub("[$, ]", "", cleaned_airbnb_listings$price))
+```
+
+#Pipeline 1.6: Imputing Missing Values
+```{r}
+# List of columns to impute with median
+columns_to_impute <- c("host_listings_count", "bathrooms", "bedrooms", "beds", "cleaning_fee", 
+                        "review_scores_rating", "review_scores_accuracy", "review_scores_cleanliness", 
+                        "review_scores_checkin", "review_scores_communication", "review_scores_location", 
+                        "review_scores_value", "reviews_per_month")
+
+# Replace NAs in each column with the median
+for (col in columns_to_impute) {
+  cleaned_airbnb_listings[[col]][is.na(cleaned_airbnb_listings[[col]])] <- median(cleaned_airbnb_listings[[col]], na.rm = TRUE)
+}
+
+# Impute missing or zero values in square_feet
+cleaned_airbnb_listings$square_feet <- ifelse(cleaned_airbnb_listings$square_feet == 0 | 
+                                              is.na(cleaned_airbnb_listings$square_feet), 
+                                                ave(cleaned_airbnb_listings$square_feet, 
+                                                cleaned_airbnb_listings$neighbourhood_cleansed, 
+                                                FUN = function(x) mean(x[x != 0], na.rm = TRUE)),
+                                                cleaned_airbnb_listings$square_feet)
+```
+
+#Pipeline 1.7: Further Imputation for square_feet
+```{r}
+# Impute missing square_feet values with the average of their corresponding neighbourhood_group_cleansed
+cleaned_airbnb_listings$square_feet <- ifelse(is.na(cleaned_airbnb_listings$square_feet),
+                                               ave(cleaned_airbnb_listings$square_feet, 
+                                                   cleaned_airbnb_listings$neighbourhood_group_cleansed, 
+                                                   FUN = function(x) mean(x, na.rm = TRUE)),
+                                               cleaned_airbnb_listings$square_feet)
+```
+
+#Pipeline 1.8: Feature Engineering for Amenities and Host Verifications
+```{r}
+library(dplyr)
+library(stringr)
+library(caret)
+
+# Preprocess amenities
+cleaned_airbnb_listings <- cleaned_airbnb_listings %>%
+  mutate(amenities_cleaned = str_remove_all(amenities, "\\[|\\]|'"),
+         amenities_list = str_split(amenities_cleaned, ",\\s*"))
+
+# Preprocess host_verifications
+cleaned_airbnb_listings <- cleaned_airbnb_listings %>%
+  mutate(host_verifications_cleaned = str_remove_all(host_verifications, "\\[|\\]|'"),
+         host_verifications_list = str_split(host_verifications_cleaned, ",\\s*"))
+
+# Generate binary indicators for amenities
+unique_amenities <- unique(unlist(cleaned_airbnb_listings$amenities_list))
+
+# Create binary variables for amenities in a loop
+for (amenity in unique_amenities) {
+  cleaned_airbnb_listings[[paste0(amenity, "_binary")]] <- as.integer(sapply(cleaned_airbnb_listings$amenities_list, function(x) amenity %in% unlist(x)))
+}
+
+# Generate binary indicators for host verifications
+unique_host_verifications <- unique(unlist(cleaned_airbnb_listings$host_verifications_list))
+
+# Create binary variables for host verifications in a loop
+for (verification in unique_host_verifications) {
+  cleaned_airbnb_listings[[paste0(verification, "_verification")]] <- as.integer(sapply(cleaned_airbnb_listings$host_verifications_list, function(x) verification %in% unlist(x)))
+}
+
+# Encode categorical attributes using dummyVars
+dummy_vars <- dummyVars(price ~ 
+                         host_response_time + 
+                         host_response_rate + 
+                         host_is_superhost + 
+                         host_neighbourhood + 
+                         host_has_profile_pic + 
+                         host_identity_verified + 
+                         neighbourhood_cleansed + 
+                         neighbourhood_group_cleansed +
+                         zipcode + 
+                         is_location_exact + 
+                         property_type + 
+                         room_type +
+                         instant_bookable, 
+                       data = cleaned_airbnb_listings)
+
+
+encoded_airbnb_data <- predict(dummy_vars, newdata = cleaned_airbnb_listings)
+cleaned_airbnb_encoded <- data.frame(encoded_airbnb_data)
+
+# Step 7: Combine the encoded categorical data with the original numeric and binary columns
+goodcleaned_airbnb <- cbind(cleaned_airbnb_listings, cleaned_airbnb_encoded)
+```
+
+#Pipeline 1.9: Feature Engineering for Amenities and Host Verifications
+```{r}
+# Remove specified columns
+trimmed_airbnb_data <- goodcleaned_airbnb[, !(names(goodcleaned_airbnb) %in% 
+                                                  c("host_is_superhost", "property_type", "room_type", 
+                                                    "zipcode", "host_response_time", "host_response_rate", 
+                                                    "host_neighbourhood", "host_has_profile_pic", 
+                                                    "host_identity_verified", "neighbourhood_cleansed", 
+                                                    "neighbourhood_group_cleansed", "is_location_exact", 
+                                                    "instant_bookable"))]
+```
+
+#Pipeline 1.10: Keeping Only Selected Attributes
+```{r}
+# Keep only selected attributes for the final dataset
+selected_attributes <- c("price", "host_response_timeN.A", "host_response_timewithin.a.few.hours", 
+                         "host_response_timewithin.an.hour", "host_response_rate48.", 
+                         "host_response_rate60.", "host_response_rate61.", 
+                         "host_response_rate70.", "host_response_rate72.", 
+                         "host_response_rate75.", "host_response_rate80.", 
+                         "host_response_rate88.", "host_response_rate89.", 
+                         "host_response_rate90.", "host_response_rate93.", 
+                         "host_is_superhostf", "host_neighbourhoodAdelfas", 
+                         "host_neighbourhoodCamp.d.en.Grassot.i.Gràcia.Nova", 
+                         "host_neighbourhoodCoral.Gables", "host_neighbourhoodEl.Gòtic", 
+                         "host_neighbourhoodEmbajadores", 
+                         "host_neighbourhoodL.Antiga.Esquerra.de.l.Eixample", 
+                         "host_neighbourhoodLa.Latina", 
+                         "host_neighbourhoodLa.Nova.Esquerra.de.l.Eixample", 
+                         "host_neighbourhoodLa.Vila.Olímpica", 
+                         "host_neighbourhoodLes.Corts", "host_neighbourhoodSant.Antoni", 
+                         "host_neighbourhoodSol", "neighbourhood_cleansedles.Corts", 
+                         "neighbourhood_cleansedSant.Antoni", "zipcode8007", 
+                         "zipcode8008", "zipcode8010", "zipcode8021", "zipcode8036", 
+                         "property_typeBed.and.breakfast", "property_typeBoat", 
+                         "property_typeNature.lodge", "instant_bookablef", "host_id", 
+                         "host_listings_count", "accommodates", "bathrooms", 
+                         "minimum_nights", "availability_30", "availability_365", 
+                         "number_of_reviews_ltm", "review_scores_rating", 
+                         "review_scores_checkin", "review_scores_value", 
+                         "Elevator_binary", "Essentials_binary", "Hangers_binary", 
+                         "Iron_binary", "Crib_binary", "Microwave_binary", 
+                         "Refrigerator_binary", "Dishwasher_binary", "Doorman_binary", 
+                         "Gym_binary", "Pool_binary", "email_verification", 
+                         "reviews_verification", "government_id_verification", 
+                         "work_email_verification", "sent_id_verification")
+
+final_airbnb_dataset <- trimmed_airbnb_data[, selected_attributes]
+```
+
+#Pipeline 1.11 & 1.12: Residual Removal Cycles
+```{r}
+# Assuming linear regression model is fitted with "model" as the name
+initial_model <- lm(price ~ ., data = final_airbnb_dataset)
+
+# First cycle of residual removal
+for_cycle_1 <- function(model, data) {
+  residuals <- residuals(model)
+  
+  Q1 <- quantile(residuals, 0.25)
+  Q3 <- quantile(residuals, 0.75)
+  IQR <- Q3 - Q1
+  
+  lower_threshold <- Q1 - 1.5 * IQR
+  upper_threshold <- Q3 + 1.5 * IQR
+  
+  large_residuals <- which(residuals > upper_threshold | residuals < lower_threshold)
+  return(data[-large_residuals, ])
+}
+
+significant_airbnb_data_cleaned <- for_cycle_1(initial_model, final_airbnb_dataset)
+
+# Fit new model after first cleaning
+cleaned_model <- lm(price ~ ., data = significant_airbnb_data_cleaned)
+
+# Second cycle of residual removal
+final_airbnb_data_cleaned <- for_cycle_1(cleaned_model, significant_airbnb_data_cleaned)
+```
+
+#Pipeline 1.13: Final Prediction
+```{r}
+# Splitting dataset into Training and Testing
+set.seed(123) # For reproducibility
+trainIndex <- sample(1:nrow(final_airbnb_data_cleaned), 0.7 * nrow(final_airbnb_data_cleaned))
+train_data <- final_airbnb_data_cleaned[trainIndex, ]
+test_data <- final_airbnb_data_cleaned[-trainIndex, ]
+
+# Fit linear regression model on training data
+final_linear_model <- lm(price ~ ., data = train_data)
+
+# Save the linear model to a file
+save(final_linear_model, file = "final_linear_model.RData")  # You can specify a different file name if you prefer
+
+# Make predictions on test data
+predictions <- predict(final_linear_model, newdata = test_data)
+
+# Combine results
+results <- data.frame(Actual = test_data$price, Predicted = predictions)
+
+# Check model's performance
+summary(results)
+```
+```{r}
+# Set scipen option to prevent scientific notation
+options(scipen = 999)
+
+# Print the summary again
+summary(final_linear_model)
+```
+
+
+#Pipeline 1.14: Model Performance Metrics
+```{r}
+# Load necessary library
+library(Metrics)
+
+# Calculate performance metrics
+mae <- mean(abs(results$Actual - results$Predicted))  # Mean Absolute Error
+mse <- mean((results$Actual - results$Predicted)^2)  # Mean Squared Error
+rmse <- sqrt(mse)  # Root Mean Squared Error
+r_squared <- cor(results$Actual, results$Predicted)^2  # R-squared
+
+# Printing the metrics
+cat("Performance Metrics:\n")
+cat("Mean Absolute Error (MAE): ", mae, "\n")
+cat("Mean Squared Error (MSE): ", mse, "\n")
+cat("Root Mean Squared Error (RMSE): ", rmse, "\n")
+cat("R-squared: ", r_squared, "\n")
+```
+
+
+---------------------------------------PIPELINE # 2 - NEW DATASET------------------------------------
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(stringr)
+library(caret)
+
+# Step 1: Read the new dataset
+new_file_path <- "path/to/your/new_dataset.csv"  # Adjust the path accordingly
+new_airbnb_listings_v2 <- read.csv("C:/Users/jivko/Documents/Data Analytics, Big Data, and Predictive Analytics/Personal Project/Linear Regression/sept6.csv", header = TRUE)
+
+# Step 2: Remove Irrelevant Attributes from New Dataset
+new_cleaned_airbnb_listings_v2 <- new_airbnb_listings_v2[, !(names(new_airbnb_listings_v2) %in% 
+                                                                c("has_availability", "listing_url", "name", 
+                                                                  "summary", "description", "picture_url", 
+                                                                  "host_url", "host_name", "host_picture_url", 
+                                                                  "street", "neighbourhood", "city", 
+                                                                  "country", "host_since", "first_review", 
+                                                                  "last_review"))]
+
+# Step 4: Clean up cleaning_fee
+if ("cleaning_fee" %in% names(new_cleaned_airbnb_listings_v2)) {
+  new_cleaned_airbnb_listings_v2$cleaning_fee <- gsub("[$ ]", "", new_cleaned_airbnb_listings_v2$cleaning_fee)
+  new_cleaned_airbnb_listings_v2$cleaning_fee <- as.numeric(new_cleaned_airbnb_listings_v2$cleaning_fee)
+  # Replace NAs with median cleaning_fee
+  cleaning_fee_median_v2 <- median(new_cleaned_airbnb_listings_v2$cleaning_fee, na.rm = TRUE)
+  new_cleaned_airbnb_listings_v2$cleaning_fee[is.na(new_cleaned_airbnb_listings_v2$cleaning_fee)] <- cleaning_fee_median_v2
+}
+
+# Step 5: Clean price if it exists (avoid errors if it's missing)
+if ("price" %in% names(new_cleaned_airbnb_listings_v2)) {
+  new_cleaned_airbnb_listings_v2$price <- as.numeric(gsub("[$, ]", "", new_cleaned_airbnb_listings_v2$price))
+}
+
+# Step 6: Imputing Missing Values
+# Only proceed with imputing columns that exist in the dataset
+columns_to_impute_v2 <- c("host_listings_count", "bathrooms", "bedrooms", "beds", "cleaning_fee", 
+                            "review_scores_rating", "review_scores_accuracy", "review_scores_cleanliness", 
+                            "review_scores_checkin", "review_scores_communication", "review_scores_location", 
+                            "review_scores_value", "reviews_per_month")
+
+# Filter columns to only include those present in the dataset
+columns_present_v2 <- columns_to_impute_v2[columns_to_impute_v2 %in% names(new_cleaned_airbnb_listings_v2)]
+
+# First, replace NAs with the median for the available columns
+for (col in columns_present_v2) {
+  new_cleaned_airbnb_listings_v2[[col]][is.na(new_cleaned_airbnb_listings_v2[[col]])] <- median(new_cleaned_airbnb_listings_v2[[col]], na.rm = TRUE)
+}
+
+# Step 7: Feature Engineering for Amenities and Host Verifications
+
+# Preprocess amenities
+new_cleaned_airbnb_listings_v2 <- new_cleaned_airbnb_listings_v2 %>%
+  mutate(amenities_cleaned_v2 = str_remove_all(amenities, "\\[|\\]|'"),
+         amenities_list_v2 = str_split(amenities_cleaned_v2, ",\\s*"))
+
+# Preprocess host_verifications
+new_cleaned_airbnb_listings_v2 <- new_cleaned_airbnb_listings_v2 %>%
+  mutate(host_verifications_cleaned_v2 = str_remove_all(host_verifications, "\\[|\\]|'"),
+         host_verifications_list_v2 = str_split(host_verifications_cleaned_v2, ",\\s*"))
+
+# Generate binary indicators for amenities
+unique_amenities_v2 <- unique(unlist(new_cleaned_airbnb_listings_v2$amenities_list_v2))
+
+# Create binary variables for amenities in a loop
+for (amenity in unique_amenities_v2) {
+  new_cleaned_airbnb_listings_v2[[paste0(gsub('"', '', amenity), "_binary")]] <- 
+    as.integer(sapply(new_cleaned_airbnb_listings_v2$amenities_list_v2, function(x) amenity %in% unlist(x)))
+}
+
+# Generate binary indicators for host verifications
+unique_host_verifications_v2 <- unique(unlist(new_cleaned_airbnb_listings_v2$host_verifications_list_v2))
+
+# Create binary variables for host verifications in a loop
+for (verification in unique_host_verifications_v2) {
+  new_cleaned_airbnb_listings_v2[[paste0(gsub('"', '', verification), "_verification")]] <- 
+    as.integer(sapply(new_cleaned_airbnb_listings_v2$host_verifications_list_v2, function(x) verification %in% unlist(x)))
+}
+
+# Step 8: Encode categorical attributes
+# Define categorical attributes
+categorical_vars_v2 <- c("host_response_time", "host_response_rate", "host_is_superhost",
+                          "host_neighbourhood", "host_has_profile_pic", "host_identity_verified", 
+                          "neighbourhood_cleansed", "neighbourhood_group_cleansed", 
+                          "property_type", "room_type", "instant_bookable")
+
+# Check for presence of categorical variables before encoding
+categorical_vars_present_v2 <- categorical_vars_v2[categorical_vars_v2 %in% names(new_cleaned_airbnb_listings_v2)]
+
+if (length(categorical_vars_present_v2) > 0) {
+  dummy_vars_v2 <- dummyVars(paste("~", paste(categorical_vars_present_v2, collapse=" + ")), data = new_cleaned_airbnb_listings_v2)
+  encoded_new_airbnb_data_v2 <- predict(dummy_vars_v2, newdata = new_cleaned_airbnb_listings_v2)
+  new_cleaned_airbnb_encoded_v2 <- data.frame(encoded_new_airbnb_data_v2)
+} else {
+  new_cleaned_airbnb_encoded_v2 <- new_cleaned_airbnb_listings_v2  # No categorical variables to encode
+}
+
+# Step 9: Combine the encoded data
+complete_new_airbnb_data_v2 <- cbind(new_cleaned_airbnb_listings_v2, new_cleaned_airbnb_encoded_v2)
+
+# Step 10: Keeping Only Selected Attributes
+selected_attributes_v2 <- c("host_response_timeN.A", "host_response_timewithin.a.few.hours", 
+                             "host_response_timewithin.an.hour", "host_response_rate48.", 
+                             "host_response_rate60.", "host_response_rate61.", 
+                             "host_response_rate70.", "host_response_rate72.", 
+                             "host_response_rate75.", "host_response_rate80.", 
+                             "host_response_rate88.", "host_response_rate89.", 
+                             "host_response_rate90.", "host_response_rate93.", 
+                             "host_is_superhostf", "host_neighbourhoodAdelfas", 
+                             "host_neighbourhoodCamp.d.en.Grassot.i.Gràcia.Nova", 
+                             "host_neighbourhoodCoral.Gables", "host_neighbourhoodEl.Gòtic", 
+                             "host_neighbourhoodEmbajadores", 
+                             "host_neighbourhoodL.Antiga.Esquerra.de.l.Eixample", 
+                             "host_neighbourhoodLa.Latina", 
+                             "host_neighbourhoodLa.Nova.Esquerra.de.l.Eixample", 
+                             "host_neighbourhoodLa.Vila.Olímpica", 
+                             "host_neighbourhoodLes.Corts", "host_neighbourhoodSant.Antoni", 
+                             "host_neighbourhoodSol", "neighbourhood_cleansedles.Corts", 
+                             "neighbourhood_cleansedSant.Antoni", "zipcode8007", 
+                             "zipcode8008", "zipcode8010", "zipcode8021", "zipcode8036", 
+                             "property_typeBed.and.breakfast", "property_typeBoat", 
+                             "property_typeNature.lodge", "instant_bookablef", 
+                             "host_listings_count", "accommodates", "bathrooms", 
+                             "minimum_nights", "availability_30", "availability_365", 
+                             "number_of_reviews_ltm", "review_scores_rating", 
+                             "review_scores_checkin", "review_scores_value", 
+                             "Elevator_binary", "Essentials_binary", "Hangers_binary", 
+                             "Iron_binary", "Crib_binary", "Microwave_binary", 
+                             "Refrigerator_binary", "Dishwasher_binary", "Doorman_binary", 
+                             "Gym_binary", "Pool_binary", "email_verification", 
+                             "reviews_verification", "government_id_verification", 
+                             "work_email_verification", "sent_id_verification")
+
+# Retain only existing columns
+selected_attributes_v2 <- intersect(selected_attributes_v2, names(complete_new_airbnb_data_v2))
+
+# Now subset the data frame
+new_predictions_data_v2 <- complete_new_airbnb_data_v2[, selected_attributes_v2, drop = FALSE]
+
+# Step 11: Load the final model (trained in previous pipelines)
+load("final_linear_model.RData")  # Modify the filename as per your environment
+
+# Step 12: Ensure all required attributes are present
+# Identify missing attributes in the new dataset (new_predictions_data_v2)
+required_attributes <- names(final_linear_model$coefficients)
+missing_attributes <- setdiff(required_attributes, names(new_predictions_data_v2))
+
+# Define the selected binary variables
+selected_binary_variables <- c(
+  "host_response_timeN.A", "host_response_timewithin.a.few.hours", "host_response_timewithin.an.hour",
+  "host_response_rate48.", "host_response_rate60.", "host_response_rate61.", "host_response_rate70.",
+  "host_response_rate72.", "host_response_rate75.", "host_response_rate80.", "host_response_rate88.",
+  "host_response_rate89.", "host_response_rate90.", "host_response_rate93.", "host_is_superhostf",
+  "host_neighbourhoodAdelfas", "host_neighbourhoodCamp.d.en.Grassot.i.Gràcia.Nova", "host_neighbourhoodCoral.Gables",
+  "host_neighbourhoodEl.Gòtic", "host_neighbourhoodEmbajadores", "host_neighbourhoodL.Antiga.Esquerra.de.l.Eixample",
+  "host_neighbourhoodLa.Latina", "host_neighbourhoodLa.Nova.Esquerra.de.l.Eixample", "host_neighbourhoodLa.Vila.Olímpica",
+  "host_neighbourhoodLes.Corts", "host_neighbourhoodSant.Antoni", "host_neighbourhoodSol", "neighbourhood_cleansedles.Corts",
+  "neighbourhood_cleansedSant.Antoni", "zipcode8007", "zipcode8008", "zipcode8010", "zipcode8021", "zipcode8036",
+  "property_typeBed.and.breakfast", "property_typeBoat", "property_typeNature.lodge", "instant_bookablef",
+  "Elevator_binary", "Essentials_binary", "Hangers_binary", "Iron_binary", "Crib_binary", "Microwave_binary",
+  "Refrigerator_binary", "Dishwasher_binary", "Doorman_binary", "Gym_binary", "Pool_binary", "email_verification",
+  "reviews_verification", "government_id_verification", "work_email_verification", "sent_id_verification"
+)
+
+# Impute missing attributes with regression logic, if any attributes are missing
+if (length(missing_attributes) > 0) {
+  for (attr in missing_attributes) {
+    if (attr %in% names(new_predictions_data_v2)) {
+      # Create a formula for regression using available predictors
+      predictors <- paste(setdiff(selected_binary_variables, attr), collapse = " + ")
+      formula <- as.formula(paste(attr, "~", predictors))
+      
+      # Fit a linear model using the non-missing values in the new_predictions_data_v2
+      temp_data <- new_predictions_data_v2[!is.na(new_predictions_data_v2[[attr]]), ]
+      
+      if (nrow(temp_data) > 0) {
+        model <- lm(formula, data = temp_data)
+        
+        # Predict missing values
+        missing_indices <- is.na(new_predictions_data_v2[[attr]])
+        new_predictions_data_v2[[attr]][missing_indices] <- predict(model, new_predictions_data_v2[missing_indices, ])
+      }
+    } else {
+      # If the attribute does not exist in new_predictions_data_v2, you may want to handle it differently,
+      # e.g., setting to 0 or skipping
+      new_predictions_data_v2[[attr]] <- 0  # or another method of choice
+    }
+  }
+}
+
+# View the calculated proportions and imputation results
+print(missing_attributes)
+
+# Step 13: Make predictions
+new_predictions_v2 <- predict(final_linear_model, newdata = new_predictions_data_v2)
+
+# Create a new dataframe with the existing relevant data and predicted prices
+new_predictions_v3 <- new_predictions_data_v2  # Start with the existing data
+new_predictions_v3$Predicted_Price <- new_predictions_v2  # Add the predicted prices as a new column
+
+# Step 14: View and output predictions
+print(new_predictions_v3)  # View the dataframe with predicted prices
+
+# Combine predictions with the original new dataset if desired
+predicted_results_v2 <- data.frame(New_Data = new_airbnb_listings_v2, Predicted_Price = new_predictions_v2)
+
+print(predicted_results_v2)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+`
+
+
