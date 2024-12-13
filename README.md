@@ -3,5 +3,9 @@
 ### > FILE: 
     - Barcelona Airbnb listings - Linear Modeling.Rmd
 
-## •	Insights From Final Linear Model
-### Top 5 Positive Influencers on Target Variable - Price
+## •	Pipeline #1 - Data Preparation and Model Training
+- 
+
+
+## •	Pipeline #2 - New Dataset
+- 
